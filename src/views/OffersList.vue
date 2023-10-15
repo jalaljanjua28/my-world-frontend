@@ -1,10 +1,12 @@
 <template>
   <div>
-    <el-breadcrumb-item>
-      <router-link to="/">
-        <el-button icon="el-icon-caret-left">Back</el-button>
-      </router-link>
-    </el-breadcrumb-item>
+    <el-breadcrumb>
+      <el-breadcrumb-item>
+        <router-link to="/">
+          <el-button icon="el-icon-caret-left">Back</el-button>
+        </router-link>
+      </el-breadcrumb-item>
+    </el-breadcrumb>
     <el-row class="offer-page">
       <el-col :span="8" v-for="item in items" :key="item.id">
         <el-card class="offer-item">
@@ -62,13 +64,13 @@ export default {
 }
 .offer-page {
   display: flex;
-  flex-wrap: wrap;
-  align-content: center;
   flex-direction: row;
+  margin-top: 50px;
+  justify-content: center;
 }
 
 .offer-item {
-  height: 400px;
+  height: 470px;
   text-align: center;
 }
 
@@ -108,5 +110,16 @@ export default {
   font-size: 14px;
   border-radius: 4px;
   padding: 11px 10px;
+}
+@media screen and (max-width: 600px) {
+  .offer-page[data-v-7f471be2] {
+    display: flex;
+    flex-direction: column;
+    margin-top: 50px;
+    align-items: center;
+  }
+  .el-col-8[data-v-7f471be2] {
+    width: 60%;
+  }
 }
 </style>

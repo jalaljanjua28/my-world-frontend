@@ -1,29 +1,15 @@
 <template>
   <div class="header-right">
-    <el-button
-      @click="drawer = true"
-      style="background-color: #f9f9f9"
-      size="small"
-      icon="el-icon-s-operation"
-      class="el-button-nav"
-    >
-    </el-button>
-    <el-button
-      @click="drawer = true"
-      style="background-color: #f9f9f9"
-      size="small"
-      icon="el-icon-set-up"
-      class="el-button-nav"
-    >
-    </el-button>
-    <el-button
-      @click="drawer = true"
-      style="background-color: #f9f9f9"
-      size="small"
-      icon="el-icon-folder"
-      class="el-button-nav"
-    >
-    </el-button>
+    <el-dropdown split-button type="default" @click="handleClick">
+      Settings
+      <el-dropdown-menu slot="dropdown">
+        <el-dropdown-item>Action 1</el-dropdown-item>
+        <el-dropdown-item>Action 2</el-dropdown-item>
+        <el-dropdown-item>Action 3</el-dropdown-item>
+        <el-dropdown-item>Action 4</el-dropdown-item>
+        <el-dropdown-item>Action 5</el-dropdown-item>
+      </el-dropdown-menu>
+    </el-dropdown>
   </div>
 </template>
 
@@ -39,7 +25,30 @@ export default {
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
     },
+    handleClick() {
+      alert("button click");
+    },
   },
 };
 </script>
-<style></style>
+<style>
+.el-dropdown {
+  vertical-align: top;
+}
+.header-right {
+  margin-top: 7px;
+  display: flex;
+}
+.el-dropdown + .el-dropdown {
+  margin-left: 15px;
+}
+.el-icon-arrow-down {
+  font-size: 12px;
+}
+.el-dropdown .el-button-group {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 7px;
+  margin-right: -12px;
+}
+</style>

@@ -1,10 +1,12 @@
 <template>
   <div>
-    <el-breadcrumb-item>
-      <router-link to="/">
-        <el-button icon="el-icon-caret-left">Back</el-button>
-      </router-link>
-    </el-breadcrumb-item>
+    <el-breadcrumb>
+      <el-breadcrumb-item>
+        <router-link to="/">
+          <el-button icon="el-icon-caret-left">Back</el-button>
+        </router-link>
+      </el-breadcrumb-item>
+    </el-breadcrumb>
     <el-row class="recipe-page">
       <el-col :span="8" v-for="recipe in recipes" :key="recipe.id">
         <el-card class="recipe-item">
@@ -75,6 +77,9 @@ export default {
   flex-wrap: wrap;
   align-content: center;
   flex-direction: row;
+  margin-top: 50px;
+  margin-left: 35px;
+  margin-right: 30px;
 }
 
 .recipe-item {
@@ -142,5 +147,17 @@ export default {
   font-size: 14px;
   border-radius: 4px;
   padding: 11px 10px;
+}
+@media screen and (max-width: 700px) {
+  .recipe-page[data-v-dab5ff12] {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    flex-direction: column;
+    margin-top: 50px;
+  }
+  .el-col-8 {
+    width: 100%;
+  }
 }
 </style>

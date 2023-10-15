@@ -100,12 +100,12 @@ export default {
 .search-container {
   display: flex;
   align-items: center;
-  width: fit-content;
+  width: 100%;
 }
 .search-button {
   flex-shrink: 0;
   font-size: x-large !important;
-  margin-bottom: 9px;
+  margin-bottom: 9px !important;
   font-size: 16px;
   border: none !important;
   color: #6457f0 !important;
@@ -114,5 +114,19 @@ export default {
 .el-button.is-circle {
   padding: 0px;
   background: none;
+  border-radius: 50%;
+}
+
+.search-input {
+  flex-grow: 1;
+  margin-right: -72px; /* Adjust the margin as needed */
+}
+@media screen and (max-width: 520px) {
+  .search-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-top: 0px;
+  }
 }
 </style>

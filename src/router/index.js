@@ -4,7 +4,9 @@ import store from "./../store/index.js";
 import HomeView from "../views/HomeView.vue";
 import ShoppingCart from "../views/ShoppingCart.vue";
 import OffersList from "../views/OffersList";
-import ProductDetails from "../views/ProductDetails";
+import ProductDetailsFood from "../components/Data-resources/ProductDetails/ProductDetailsFood";
+import ProductDetailsNonFood from "../components/Data-resources/ProductDetails/ProductDetailsNonFood";
+
 import AboutUs from "../views/AboutUs";
 import ItemsInventory from "../views/ItemsInventory";
 import AccountPage from "../views/AccountPage";
@@ -32,9 +34,14 @@ const routes = [
     component: OffersList,
   },
   {
-    path: "/product-details",
-    name: "product",
-    component: ProductDetails,
+    path: "/product-detailsFood",
+    name: "productFood",
+    component: ProductDetailsFood,
+  },
+  {
+    path: "/product-detailsNonFood",
+    name: "productNonFood",
+    component: ProductDetailsNonFood,
   },
   {
     path: "/about-us",

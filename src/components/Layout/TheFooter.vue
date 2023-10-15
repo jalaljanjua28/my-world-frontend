@@ -178,7 +178,7 @@ p {
   background-color: #f9f9f9;
 }
 .footer2 {
-  height: 80px;
+  height: 60px;
   line-height: 70px;
   background-color: #6457f0;
   padding: 5px 0;

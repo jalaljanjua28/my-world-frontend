@@ -127,4 +127,10 @@
   color: none;
   width: 100%;
 }
+.el-aside {
+  overflow: auto;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  background-color: gainsboro;
+}
 </style>

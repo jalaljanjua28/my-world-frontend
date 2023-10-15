@@ -99,7 +99,6 @@
               icon="el-icon-search"
               circle
               class="search-button"
-              style=""
             ></el-button>
           </el-popover>
         </el-col>
@@ -150,28 +149,4 @@ export default {
   },
 };
 </script>
-<style>
-.search-container {
-  display: flex;
-  align-items: center;
-}
-
-.search-input {
-  flex-grow: 1;
-  margin-right: -72px; /* Adjust the margin as needed */
-}
-
-.search-button {
-  flex-shrink: 0;
-  font-size: x-large !important;
-  margin-bottom: 11px;
-  font-size: 16px;
-  border: none !important;
-  background: #f9f9f9 !important;
-  color: #6457f0 !important;
-}
-.el-button.is-circle {
-  border-radius: 50%;
-  padding: 0px;
-}
-</style>
+<style></style>

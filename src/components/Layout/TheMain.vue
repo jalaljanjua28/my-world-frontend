@@ -1,117 +1,250 @@
 <template>
   <el-main class="main-content">
     <SearchComponent :Food="Food" :NonFood="NonFood" />
-    <section>
-      <el-tabs type="border-card">
-        <el-tab-pane label="Food"
-          ><span slot="label" style="font-size: large"
-            ><i
-              class="el-icon-food"
-              style="font-size: 22px; color: #6457f0"
-            ></i>
-            Food</span
-          >
-          <div>
-            <load-component :items="Food"></load-component>
-          </div>
-        </el-tab-pane>
-        <el-tab-pane label="Not Food">
-          <span slot="label" style="font-size: large"
-            ><i
-              class="el-icon-bicycle"
-              style="font-size: 22px; color: #6457f0"
-            ></i>
-            Non Food</span
-          >
-          <div>
-            <load-component :items="NonFood"></load-component>
-          </div>
-        </el-tab-pane>
-      </el-tabs>
-    </section>
+    <div>
+      <base-card>
+        <el-header>
+          <h1 class="header-title">Items progress Bar</h1>
+        </el-header>
+        <el-progress
+          :text-inside="true"
+          :stroke-width="26"
+          :percentage="70"
+        ></el-progress>
+        <el-progress
+          :text-inside="true"
+          :stroke-width="24"
+          :percentage="100"
+          status="success"
+        ></el-progress>
+        <el-progress
+          :text-inside="true"
+          :stroke-width="22"
+          :percentage="80"
+          status="warning"
+        ></el-progress>
+        <el-progress
+          :text-inside="true"
+          :stroke-width="20"
+          :percentage="50"
+          status="exception"
+        ></el-progress>
+        <el-header>
+          <h1 class="header-title">Items Status</h1>
+        </el-header>
+        <el-progress type="circle" :percentage="0"></el-progress>
+        <el-progress type="circle" :percentage="25"></el-progress>
+        <el-progress
+          type="circle"
+          :percentage="100"
+          status="success"
+        ></el-progress>
+        <el-progress
+          type="circle"
+          :percentage="70"
+          status="warning"
+        ></el-progress>
+        <el-progress
+          type="circle"
+          :percentage="50"
+          status="exception"
+        ></el-progress>
+      </base-card>
+    </div>
+    <div>
+      <base-card>
+        <el-header>
+          <h1 class="header-title">Purchased Items</h1>
+        </el-header>
+        <section>
+          <el-tabs>
+            <el-tab-pane label="Food"
+              ><span slot="label" style="font-size: large"
+                ><i
+                  class="el-icon-food"
+                  style="font-size: 22px; color: #6457f0"
+                ></i>
+                Food</span
+              >
+              <div>
+                <load-component :items="Food"></load-component>
+              </div>
+            </el-tab-pane>
+            <el-tab-pane label="Not Food">
+              <span slot="label" style="font-size: large"
+                ><i
+                  class="el-icon-bicycle"
+                  style="font-size: 22px; color: #6457f0"
+                ></i>
+                Non Food</span
+              >
+              <div>
+                <items-component :items="NonFood"></items-component>
+              </div>
+            </el-tab-pane>
+          </el-tabs>
+        </section>
+      </base-card>
+      <BarcodeScanDummy class="barcode" ref="BarcodeScanDummy" />
+    </div>
   </el-main>
 </template>
 
 <script>
-import LoadComponent from "../Data-resources/LoadComponent.vue";
-import SearchComponent from "../Data-resources/Search-component/SearchComponent.vue";
+import ItemsComponent from "../Data-resources/MainItemsComponent.vue";
+import SearchComponent from "../Data-resources/Search-component/SearchInventoryComponent.vue";
+import BarcodeScanDummy from "@/views/BarcodeScanDummy.vue";
 
 export default {
   components: {
-    LoadComponent,
+    ItemsComponent,
     SearchComponent,
+    BarcodeScanDummy,
   },
   data() {
     return {
       Food: [],
       NonFood: [],
+      fileData: null,
     };
   },
   mounted() {
-    this.loadItemsData();
+    this.useFileData(this.fileData);
+    this.$refs.BarcodeScanDummy.simulateUpload();
+    console.log("simulateUpload function triggered in BarcodeScanDummy.vue");
   },
   methods: {
-    loadItemsData() {
-      fetch(
-        " https://my-world-app-7nnip2tiwq-as.a.run.app/get-latest-receipt-data",
-        {
-          method: "GET",
-          mode: "cors",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      )
-        .then((response) => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error("Failed to fetch data.");
-          }
-        })
-        .then((data) => {
-          const base64Data = data.data;
-          const binaryData = new Uint8Array(
-            [...atob(base64Data)].map((char) => char.charCodeAt(0))
-          );
+    saveFileData(arrayBuffer) {
+      this.fileData = arrayBuffer;
+    },
+    useFileData() {
+      if (this.fileData) {
+        const binaryData = new Uint8Array(this.fileData);
+        const textDecoder = new TextDecoder();
+        const decodedData = textDecoder.decode(binaryData);
 
+        if (decodedData) {
+          try {
+            const parsedData = JSON.parse(decodedData);
+            if (parsedData && parsedData.Food && parsedData.Not_Food) {
+              const Food = parsedData.Food;
+              const NonFood = parsedData.Not_Food;
+
+              for (const id in Food) {
+                const item = {
+                  id: parseInt(id),
+                  name: Food[id].Name,
+                  image: Food[id].Image,
+                  date: Food[id].Date,
+                  expiry: Food[id].Expiry_Date,
+                  price: Food[id].Price,
+                  status: Food[id].Status,
+                };
+                Food[id] = item;
+              }
+
+              for (const id in NonFood) {
+                const item = {
+                  id: parseInt(id),
+                  name: NonFood[id].Name,
+                  image: NonFood[id].Image,
+                  date: NonFood[id].Date,
+                  price: NonFood[id].Price,
+                  status: NonFood[id].Status,
+                };
+                NonFood[id] = item;
+              }
+              this.Food = Food;
+              this.NonFood = NonFood;
+            } else {
+              throw new Error("Data structure is not as expected");
+            }
+          } catch (error) {
+            console.error("Error parsing JSON data:", error);
+          }
+        } else {
+          throw new Error("Received empty data or invalid JSON");
+        }
+      } else {
+        this.downloadLatestReceipt();
+      }
+    },
+    downloadLatestReceipt() {
+      fetch("http://127.0.0.1:8080/serve-latest-receipt-data", {
+        method: "GET",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.blob();
+        })
+        .then((blob) => {
+          console.log(blob);
+
+          return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsArrayBuffer(blob);
+          });
+        })
+        .then((arrayBuffer) => {
+          const binaryData = new Uint8Array(arrayBuffer);
           const textDecoder = new TextDecoder();
           const decodedData = textDecoder.decode(binaryData);
 
-          const parsedData = JSON.parse(decodedData);
+          if (decodedData) {
+            try {
+              const parsedData = JSON.parse(decodedData);
+              if (parsedData && parsedData.Food && parsedData.Not_Food) {
+                const Food = parsedData.Food;
+                const NonFood = parsedData.Not_Food;
 
-          const Food = parsedData.Food;
-          const NonFood = parsedData.Not_Food;
+                for (const id in Food) {
+                  const item = {
+                    id: parseInt(id),
+                    name: Food[id].Name,
+                    image: Food[id].Image,
+                    date: Food[id].Date,
+                    expiry: Food[id].Expiry_Date,
+                    price: Food[id].Price,
+                    status: Food[id].Status,
+                  };
+                  Food[id] = item;
+                }
 
-          for (const id in Food) {
-            const item = {
-              id: parseInt(id),
-              name: Food[id].Name,
-              image: Food[id].Image,
-              date: Food[id].Date,
-              expiry: Food[id].Expiry_Date,
-              price: Food[id].Price,
-              status: Food[id].Status,
-            };
-            Food[id] = item;
+                for (const id in NonFood) {
+                  const item = {
+                    id: parseInt(id),
+                    name: NonFood[id].Name,
+                    image: NonFood[id].Image,
+                    date: NonFood[id].Date,
+                    price: NonFood[id].Price,
+                    status: NonFood[id].Status,
+                  };
+                  NonFood[id] = item;
+                }
+                this.Food = Food;
+                this.NonFood = NonFood;
+              } else {
+                throw new Error("Data structure is not as expected");
+              }
+            } catch (error) {
+              console.error("Error parsing JSON data:", error);
+            }
+          } else {
+            throw new Error("Received empty data or invalid JSON");
           }
-
-          for (const id in NonFood) {
-            const item = {
-              id: parseInt(id),
-              name: NonFood[id].Name,
-              image: NonFood[id].Image,
-              date: NonFood[id].Date,
-              price: NonFood[id].Price,
-              status: NonFood[id].Status,
-            };
-            NonFood[id] = item;
-          }
-          this.Food = Food;
-          this.NonFood = NonFood;
+          this.saveFileData(arrayBuffer);
         })
         .catch((error) => {
-          console.error("Error:", error);
+          console.error("Error downloading latest receipt:", error);
+          // Handle the error in your preferred way, e.g., show an error message
         });
     },
   },
@@ -119,9 +252,20 @@ export default {
 </script>
 
 <style>
+.barcode {
+  display: none;
+}
+.header-title {
+  text-align: center;
+  margin-top: 25px;
+}
+.el-breadcrumb__item {
+  float: unset;
+}
 .el-button {
   padding: 11px 10px;
   line-height: 1.5;
+  font-weight: 500;
 }
 .el-button--small {
   font-size: 25px;
@@ -157,13 +301,6 @@ export default {
   margin-bottom: 20px;
   border: none;
   background-color: none;
-}
-div[data-v-48bb6248] {
-  margin: 1rem auto !important;
-  max-width: 100% !important;
-  padding: 1rem !important;
-  border-radius: 12px !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26) !important;
 }
 .el-carousel__container {
   width: 450px;

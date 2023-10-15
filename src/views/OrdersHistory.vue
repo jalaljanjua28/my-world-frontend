@@ -1,35 +1,44 @@
 <template>
   <div>
-    <el-breadcrumb-item>
-      <router-link to="/">
-        <el-button icon="el-icon-caret-left">Back</el-button>
-      </router-link>
-    </el-breadcrumb-item>
-    <el-container class="order-page">
-      <el-header>
-        <h1 class="header-title" style="margin-top: 60px">My Orders</h1>
-      </el-header>
-      <el-main>
-        <el-table :data="orders" class="order-table" stripe style="width: 100%">
-          <el-table-column prop="orderId" label="Order ID" />
-          <el-table-column prop="product" label="Product" />
-          <el-table-column prop="quantity" label="Quantity" />
-          <el-table-column prop="status" label="Status" />
-          <el-table-column prop="date" label="Date" />
-          <el-table-column label="Actions" width="100">
-            <template slot-scope="scope">
-              <el-button
-                size="small"
-                type="text"
-                @click="handleViewOrder(scope.row)"
-              >
-                View
-              </el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-      </el-main>
-    </el-container>
+    <el-breadcrumb>
+      <el-breadcrumb-item>
+        <router-link to="/">
+          <el-button icon="el-icon-caret-left">Back</el-button>
+        </router-link>
+      </el-breadcrumb-item>
+    </el-breadcrumb>
+    <base-card>
+      <el-container class="order-page">
+        <el-header>
+          <h1 class="header-title" style="margin-top: 60px">My Orders</h1>
+        </el-header>
+        <el-main>
+          <el-table
+            :data="orders"
+            class="order-table"
+            stripe
+            style="width: 100%"
+          >
+            <el-table-column prop="orderId" label="Order ID" />
+            <el-table-column prop="product" label="Product" />
+            <el-table-column prop="quantity" label="Quantity" />
+            <el-table-column prop="status" label="Status" />
+            <el-table-column prop="date" label="Date" />
+            <el-table-column label="Actions" width="100">
+              <template slot-scope="scope">
+                <el-button
+                  size="small"
+                  type="text"
+                  @click="handleViewOrder(scope.row)"
+                >
+                  View
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-main>
+      </el-container>
+    </base-card>
   </div>
 </template>
 
@@ -64,6 +73,13 @@ export default {
 </script>
 
 <style scoped>
+div[data-v-48bb6248] {
+  margin: 1rem auto;
+  max-width: 80%;
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+}
 .order-page {
   height: 100%;
 }

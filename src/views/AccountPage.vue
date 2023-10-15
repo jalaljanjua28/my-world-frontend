@@ -1,33 +1,37 @@
 <template>
   <div>
-    <el-breadcrumb-item>
-      <router-link to="/">
-        <el-button icon="el-icon-caret-left">Back</el-button>
-      </router-link>
-    </el-breadcrumb-item>
-    <el-container class="account-page">
-      <el-header style="height: 0px">
-        <h1 class="header-title">My Account</h1>
-      </el-header>
-      <el-main style="margin-top: 50px">
-        <el-form class="account-form" :model="form" ref="form">
-          <el-form-item label="Username">
-            <el-input v-model="form.username"></el-input>
-          </el-form-item>
-          <el-form-item label="Email">
-            <el-input v-model="form.email"></el-input>
-          </el-form-item>
-          <el-form-item label="Password">
-            <el-input type="password" v-model="form.password"></el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="updateAccount"
-              >Update Account</el-button
-            >
-          </el-form-item>
-        </el-form>
-      </el-main>
-    </el-container>
+    <el-breadcrumb>
+      <el-breadcrumb-item>
+        <router-link to="/">
+          <el-button icon="el-icon-caret-left">Back</el-button>
+        </router-link>
+      </el-breadcrumb-item>
+    </el-breadcrumb>
+    <base-card>
+      <el-container class="account-page">
+        <el-header style="height: 0px">
+          <h1 class="header-title">My Account</h1>
+        </el-header>
+        <el-main style="margin-top: 50px">
+          <el-form class="account-form" :model="form" ref="form">
+            <el-form-item label="Username">
+              <el-input v-model="form.username"></el-input>
+            </el-form-item>
+            <el-form-item label="Email">
+              <el-input v-model="form.email"></el-input>
+            </el-form-item>
+            <el-form-item label="Password">
+              <el-input type="password" v-model="form.password"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="updateAccount"
+                >Update Account</el-button
+              >
+            </el-form-item>
+          </el-form>
+        </el-main>
+      </el-container>
+    </base-card>
   </div>
 </template>
 
@@ -55,6 +59,13 @@ export default {
 </script>
 
 <style scoped>
+div[data-v-48bb6248] {
+  margin: 1rem auto;
+  max-width: 70%;
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+}
 .account-page {
   height: 100%;
 }
@@ -90,5 +101,8 @@ export default {
   color: #fff !important;
   background-color: #409eff !important;
   border-color: #409eff !important;
+}
+.el-breadcrumb__item {
+  float: unset;
 }
 </style>

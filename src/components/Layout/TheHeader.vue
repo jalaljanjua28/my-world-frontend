@@ -27,8 +27,11 @@
                 padding: 0px;
                 flex-direction: column;
                 justify-content: space-around;
-                margin-top: 7px;
+                margin-top: 0px;
                 margin-left: 0px;
+                height: 96px;
+                background-color: gainsboro;
+                line-height: 1.5;
               "
             >
               <svg
@@ -235,10 +238,7 @@ export default {
     padding: 20px;
     background-color: #f9f9f9;
   }
-  .header-right {
-    margin-top: 7px;
-    display: flex;
-  }
+
   .header-menu {
     width: 100%;
     background-color: #fff;
