@@ -1,0 +1,8 @@
+runtime: nodejs18 # Choose the appropriate runtime (e.g., python39, nodejs14, etc.)
+handlers:
+  - url: /(.*\.(js|css|png|jpg|jpeg|gif|ico|json|svg|woff|woff2|ttf|eot|map))$
+    static_files: dist/\1
+    upload: dist/(.*\.(js|css|png|jpg|jpeg|gif|ico|json|svg|woff|woff2|ttf|eot|map))$
+  - url: /.*
+    static_files: dist/index.html
+    upload: dist/index.html
