@@ -9,7 +9,7 @@
       <el-row>
         <el-col>
           <el-popover placement="right" width="200px" trigger="click">
-            <li v-for="(item, index) in foodSearchResults" :key="index">
+            <li v-for="(item, index) in searchResults" :key="index">
               <img :src="item.image" :alt="item.image" />
               <div>
                 <span>{{ item.name }}</span>
@@ -24,27 +24,6 @@
                 </div>
                 <div class="bottom clearfix">
                   <time class="time">{{ item.expiry }} </time>
-                </div>
-                <div>
-                  <button class="button">Add to Cart</button>
-                </div>
-              </div>
-            </li>
-            <li v-for="(item, index) in nonFoodSearchResults" :key="index">
-              <img :src="item.image" :alt="item.image" />
-              <div>
-                <span>{{ item.name }}</span>
-                <div>
-                  <span>{{ item.price }}</span>
-                </div>
-                <div>
-                  <span>{{ item.status }}</span>
-                </div>
-                <div class="bottom clearfix">
-                  <time class="time">Purchase/Expiry: {{ item.date }} </time>
-                </div>
-                <div class="bottom clearfix">
-                  <time class="time"> {{ item.expiry }} </time>
                 </div>
                 <div>
                   <button class="button">Add to Cart</button>
@@ -70,8 +49,7 @@ export default {
   data() {
     return {
       searchQuery: "",
-      foodSearchResults: [],
-      nonFoodSearchResults: [],
+      searchResults: [],
     };
   },
   methods: {
@@ -79,29 +57,32 @@ export default {
       // Implement search logic here
       const searchValue = this.searchQuery.toLowerCase();
 
-      this.foodSearchResults = this.Food.filter((item) =>
-        item.name.toLowerCase().includes(searchValue)
-      );
-
-      this.nonFoodSearchResults = this.NonFood.filter((item) =>
-        item.name.toLowerCase().includes(searchValue)
-      );
+      this.searchResults = [
+        ...this.Food.filter((item) =>
+          item.name.toLowerCase().includes(searchValue)
+        ),
+        ...this.NonFood.filter((item) =>
+          item.name.toLowerCase().includes(searchValue)
+        ),
+      ];
 
       this.searchQuery = "";
     },
   },
   props: {
-    Food: Array, // Pass the Food array as a prop
-    NonFood: Array, // Pass the NotFood array as a prop
+    Food: Array,
+    NonFood: Array,
   },
 };
 </script>
+
 <style>
 .search-container {
   display: flex;
   align-items: center;
   width: 100%;
 }
+
 .search-button {
   flex-shrink: 0;
   font-size: x-large !important;
@@ -121,6 +102,7 @@ export default {
   flex-grow: 1;
   margin-right: -72px; /* Adjust the margin as needed */
 }
+
 @media screen and (max-width: 520px) {
   .search-container {
     display: flex;

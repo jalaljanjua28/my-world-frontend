@@ -7,10 +7,11 @@
         </router-link>
       </el-breadcrumb-item>
     </el-breadcrumb>
+
+    <el-header>
+      <h1 class="header-title">Upload / Process</h1>
+    </el-header>
     <base-card>
-      <el-header>
-        <h1 class="header-title">Upload / Process</h1>
-      </el-header>
       <el-upload
         class="upload-demo"
         action="http://127.0.0.1:8080/image-process-upload-create"

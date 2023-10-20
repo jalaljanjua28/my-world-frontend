@@ -24,12 +24,12 @@
     <section>
       <div>
         <base-card>
-          <el-header>
-            <h1 class="header-title" style="font-size: 2rem">
-              Items Collection
-            </h1>
-          </el-header>
           <div class="tab-container">
+            <el-header>
+              <h1 class="header-title" style="font-size: 2rem">
+                Items Collection
+              </h1>
+            </el-header>
             <el-tabs
               type="border-card"
               style="display: inline-block !important; width: 95%"
@@ -44,7 +44,7 @@
                   N-Exp / Food</span
                 >
                 <div>
-                  <load-component :items="Food_nonexpired"></load-component>
+                  <items-component :items="Food_nonexpired"></items-component>
                 </div>
               </el-tab-pane>
               <el-tab-pane label="Not Food" class="tab-pane">
@@ -56,7 +56,9 @@
                   N-Exp / Non Food</span
                 >
                 <div>
-                  <load-component :items="NonFood_nonexpired"></load-component>
+                  <items-component
+                    :items="NonFood_nonexpired"
+                  ></items-component>
                 </div>
               </el-tab-pane>
 
@@ -69,7 +71,7 @@
                   Exp / Food</span
                 >
                 <div>
-                  <load-component :items="Food_expired"></load-component>
+                  <items-component :items="Food_expired"></items-component>
                 </div>
               </el-tab-pane>
               <el-tab-pane label="Not Food" class="tab-pane">
@@ -111,6 +113,7 @@ export default {
       NonFood_expired: [],
       Food_nonexpired: [],
       NonFood_nonexpired: [],
+      items: [],
     };
   },
   mounted() {
@@ -119,16 +122,13 @@ export default {
   },
   methods: {
     shopping_list() {
-      fetch(
-        "https://my-world-app-7nnip2tiwq-as.a.run.app/get-shopping-list-expired",
-        {
-          method: "GET",
-          mode: "cors",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      )
+      fetch("http://127.0.0.1:8080/get-shopping-list-expired", {
+        method: "GET",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
         .then((response) => {
           if (response.ok) {
             return response.json();
@@ -187,7 +187,7 @@ export default {
         });
     },
     master_list() {
-      fetch("https://my-world-app-7nnip2tiwq-as.a.run.app/get-master-list", {
+      fetch("http://127.0.0.1:8080/get-master-list", {
         method: "GET",
         mode: "cors",
         headers: {
@@ -239,7 +239,6 @@ export default {
               };
               NonFood[id] = item;
             }
-
             this.Food_nonexpired = Food;
             this.NonFood_nonexpired = NonFood;
           } catch (error) {
@@ -253,7 +252,6 @@ export default {
     handleItemDeleted(itemToDelete) {
       // Update the items prop by filtering out the deleted item
       this.items = this.items.filter((item) => item !== itemToDelete);
-      location.reload();
     },
   },
 };
@@ -274,7 +272,6 @@ export default {
   margin: 10px;
   transition: 0.1s;
   font-weight: 500;
-  padding: 12px 20px;
   font-size: 14px;
   border-radius: 4px;
   padding: 11px 10px;

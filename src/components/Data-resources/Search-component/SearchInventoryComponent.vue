@@ -1,15 +1,16 @@
 <template>
-  <div class="search-container">
+  <div>
     <el-input
       v-model="searchQuery"
       placeholder="Search for items"
       class="search-input"
+      @change="searchItems"
     />
-    <ul>
-      <el-row>
-        <el-col>
-          <el-popover placement="right" width="200px" trigger="click">
-            <li v-for="(item, index) in ExpiredFoodSearch" :key="index">
+    <div v-if="displayResults">
+      <ul>
+        <el-row>
+          <el-col>
+            <li v-for="(item, index) in filteredItems" :key="index">
               <img :src="item.image" :alt="item.image" />
               <div>
                 <span>{{ item.name }}</span>
@@ -30,80 +31,10 @@
                 </div>
               </div>
             </li>
-            <li v-for="(item, index) in ExpiredNonfoodSearch" :key="index">
-              <img :src="item.image" :alt="item.image" />
-              <div>
-                <span>{{ item.name }}</span>
-                <div>
-                  <span>{{ item.price }}</span>
-                </div>
-                <div>
-                  <span>{{ item.status }}</span>
-                </div>
-                <div class="bottom clearfix">
-                  <time class="time">Purchase/Expiry: {{ item.date }} </time>
-                </div>
-                <div class="bottom clearfix">
-                  <time class="time">{{ item.expiry }} </time>
-                </div>
-                <div>
-                  <button class="button">Add to Cart</button>
-                </div>
-              </div>
-            </li>
-            <li v-for="(item, index) in NonExpiredFoodSearch" :key="index">
-              <img :src="item.image" :alt="item.image" />
-              <div>
-                <span>{{ item.name }}</span>
-                <div>
-                  <span>{{ item.price }}</span>
-                </div>
-                <div>
-                  <span>{{ item.status }}</span>
-                </div>
-                <div class="bottom clearfix">
-                  <time class="time">Purchase/Expiry: {{ item.date }} </time>
-                </div>
-                <div class="bottom clearfix">
-                  <time class="time"> {{ item.expiry }} </time>
-                </div>
-                <div>
-                  <button class="button">Add to Cart</button>
-                </div>
-              </div>
-            </li>
-            <li v-for="(item, index) in NonExpiredNonFoodSearch" :key="index">
-              <img :src="item.image" :alt="item.image" />
-              <div>
-                <span>{{ item.name }}</span>
-                <div>
-                  <span>{{ item.price }}</span>
-                </div>
-                <div>
-                  <span>{{ item.status }}</span>
-                </div>
-                <div class="bottom clearfix">
-                  <time class="time">Purchase/Expiry: {{ item.date }} </time>
-                </div>
-                <div class="bottom clearfix">
-                  <time class="time"> {{ item.expiry }} </time>
-                </div>
-                <div>
-                  <button class="button">Add to Cart</button>
-                </div>
-              </div>
-            </li>
-            <el-button
-              @click="searchItems"
-              slot="reference"
-              icon="el-icon-search"
-              circle
-              class="search-button"
-            ></el-button>
-          </el-popover>
-        </el-col>
-      </el-row>
-    </ul>
+          </el-col>
+        </el-row>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -112,41 +43,36 @@ export default {
   data() {
     return {
       searchQuery: "",
-      ExpiredFoodSearch: [],
-      ExpiredNonfoodSearch: [],
-      NonExpiredFoodSearch: [],
-      NonExpiredNonFoodSearch: [],
+      displayResults: false,
+      filteredItems: [],
     };
   },
   methods: {
     searchItems() {
       // Implement search logic here
       const searchValue = this.searchQuery.toLowerCase();
+      const allItems = [
+        ...this.ExpiredFood,
+        ...this.ExpiredNonFood,
+        ...this.NonExpiredFood,
+        ...this.NonExpiredNonFood,
+      ];
 
-      this.ExpiredFoodSearch = this.ExpiredFood.filter((item) =>
+      this.filteredItems = allItems.filter((item) =>
         item.name.toLowerCase().includes(searchValue)
       );
 
-      this.ExpiredNonfoodSearch = this.ExpiredNonFood.filter((item) =>
-        item.name.toLowerCase().includes(searchValue)
-      );
-      this.NonExpiredFoodSearch = this.NonExpiredFood.filter((item) =>
-        item.name.toLowerCase().includes(searchValue)
-      );
-
-      this.NonExpiredNonFoodSearch = this.NonExpiredNonFood.filter((item) =>
-        item.name.toLowerCase().includes(searchValue)
-      );
-
+      this.displayResults = true;
       this.searchQuery = "";
     },
   },
   props: {
-    ExpiredFood: Array, // Pass the Food array as a prop
-    ExpiredNonFood: Array, // Pass the NotFood array as a prop
+    ExpiredFood: Array,
+    ExpiredNonFood: Array,
     NonExpiredFood: Array,
     NonExpiredNonFood: Array,
   },
 };
 </script>
+
 <style></style>

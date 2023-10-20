@@ -14,14 +14,6 @@
       <p class="logo-text">My World</p>
     </div>
     <el-menu>
-      <router-link to="/" style="text-decoration: none"
-        ><el-menu-item
-          style="border-bottom: none"
-          class="el-menu-item"
-          index="8"
-          ><i class="el-icon-menu"></i>Homepage</el-menu-item
-        ></router-link
-      >
       <router-link to="/account-page" style="text-decoration: none"
         ><el-menu-item
           style="border-bottom: none"
@@ -105,7 +97,7 @@
   list-style: none;
   position: relative;
   margin: 0;
-  padding-left: 0;
+  padding-left: 10px;
   color: #202020;
   line-height: 10vh;
   background-color: gainsboro;
@@ -114,9 +106,8 @@
   min-height: 100%;
 }
 .el-menu-item:hover {
-  outline: 0;
-  background-color: none;
-  width: 100%;
+  background: unset;
+  display: -webkit-inline-box;
 }
 .el-menu-item {
   color: #202020;
