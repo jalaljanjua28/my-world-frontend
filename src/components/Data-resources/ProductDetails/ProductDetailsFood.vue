@@ -69,7 +69,7 @@ export default {
 
   methods: {
     addItem() {
-      fetch("http://127.0.0.1:8080/addItem", {
+      fetch("https://my-world-app-7nnip2tiwq-as.a.run.app/addItem", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -94,7 +94,7 @@ export default {
     },
     deleteItem(itemToDelete) {
       // Send a request to your backend to delete the item by its name
-      fetch("http://127.0.0.1:8080/removeItem", {
+      fetch("https://my-world-app-7nnip2tiwq-as.a.run.app/removeItem", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -124,13 +124,16 @@ export default {
   },
   methods: {
     shopping_list() {
-      fetch("http://127.0.0.1:8080/get-shopping-list-expired", {
-        method: "GET",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
+      fetch(
+        "https://my-world-app-7nnip2tiwq-as.a.run.app/get-shopping-list-expired",
+        {
+          method: "GET",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
         .then((response) => {
           if (response.ok) {
             return response.json();
@@ -273,13 +276,16 @@ export default {
     //   // }
     // },
     downloadLatestReceipt() {
-      fetch("http://127.0.0.1:8080/serve-latest-receipt-data", {
-        method: "GET",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
+      fetch(
+        "https://my-world-app-7nnip2tiwq-as.a.run.app/serve-latest-receipt-data",
+        {
+          method: "GET",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
         .then((response) => {
           if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);

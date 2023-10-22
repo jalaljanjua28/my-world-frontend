@@ -122,13 +122,16 @@ export default {
   },
   methods: {
     shopping_list() {
-      fetch("http://127.0.0.1:8080/get-shopping-list-expired", {
-        method: "GET",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
+      fetch(
+        "https://my-world-app-7nnip2tiwq-as.a.run.app/get-shopping-list-expired",
+        {
+          method: "GET",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
         .then((response) => {
           if (response.ok) {
             return response.json();
@@ -187,7 +190,7 @@ export default {
         });
     },
     master_list() {
-      fetch("http://127.0.0.1:8080/get-master-list", {
+      fetch("https://my-world-app-7nnip2tiwq-as.a.run.app/get-master-list", {
         method: "GET",
         mode: "cors",
         headers: {
