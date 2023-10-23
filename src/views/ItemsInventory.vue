@@ -21,74 +21,72 @@
       :items="NonFood_expired"
       @item-deleted="handleItemDeleted"
     ></product-detailsNonFood>
+    <update-master></update-master>
+
     <section>
       <div>
-        <base-card>
-          <div class="tab-container">
-            <el-header>
-              <h1 class="header-title" style="font-size: 2rem">
-                Items Collection
-              </h1>
-            </el-header>
-            <el-tabs
-              type="border-card"
-              style="display: inline-block !important; width: 95%"
-              class="border-tab"
-            >
-              <el-tab-pane label="Food" class="tab-pane"
-                ><span slot="label" style="font-size: large"
-                  ><i
-                    class="el-icon-food"
-                    style="font-size: 22px; color: #6457f0"
-                  ></i>
-                  N-Exp / Food</span
-                >
-                <div>
-                  <items-component :items="Food_nonexpired"></items-component>
-                </div>
-              </el-tab-pane>
-              <el-tab-pane label="Not Food" class="tab-pane">
-                <span slot="label" style="font-size: large"
-                  ><i
-                    class="el-icon-bicycle"
-                    style="font-size: 22px; color: #6457f0"
-                  ></i>
-                  N-Exp / Non Food</span
-                >
-                <div>
-                  <items-component
-                    :items="NonFood_nonexpired"
-                  ></items-component>
-                </div>
-              </el-tab-pane>
+        <div class="tab-container">
+          <el-header>
+            <h1 class="header-title" style="font-size: 2rem">
+              Items Collection
+            </h1>
+          </el-header>
+          <el-tabs
+            type="border-card"
+            style="display: inline-block !important; width: 95%"
+            class="border-tab"
+          >
+            <el-tab-pane label="Food" class="tab-pane"
+              ><span slot="label" style="font-size: large"
+                ><i
+                  class="el-icon-food"
+                  style="font-size: 22px; color: #6457f0"
+                ></i>
+                N-Exp / Food</span
+              >
+              <div>
+                <items-component :items="Food_nonexpired"></items-component>
+              </div>
+            </el-tab-pane>
+            <el-tab-pane label="Not Food" class="tab-pane">
+              <span slot="label" style="font-size: large"
+                ><i
+                  class="el-icon-bicycle"
+                  style="font-size: 22px; color: #6457f0"
+                ></i>
+                N-Exp / Non Food</span
+              >
+              <div>
+                <items-component :items="NonFood_nonexpired"></items-component>
+              </div>
+            </el-tab-pane>
 
-              <el-tab-pane label="Food" class="tab-pane"
-                ><span slot="label" style="font-size: large"
-                  ><i
-                    class="el-icon-food"
-                    style="font-size: 22px; color: #6457f0"
-                  ></i>
-                  Exp / Food</span
-                >
-                <div>
-                  <items-component :items="Food_expired"></items-component>
-                </div>
-              </el-tab-pane>
-              <el-tab-pane label="Not Food" class="tab-pane">
-                <span slot="label" style="font-size: large"
-                  ><i
-                    class="el-icon-bicycle"
-                    style="font-size: 22px; color: #6457f0"
-                  ></i>
-                  Exp / Non Food</span
-                >
-                <div>
-                  <items-component :items="NonFood_expired"></items-component>
-                </div>
-              </el-tab-pane>
-            </el-tabs>
-          </div>
-        </base-card>
+            <el-tab-pane label="Food" class="tab-pane"
+              ><span slot="label" style="font-size: large"
+                ><i
+                  class="el-icon-food"
+                  style="font-size: 22px; color: #6457f0"
+                ></i>
+                Exp / Food</span
+              >
+              <div>
+                <items-component :items="Food_expired"></items-component>
+              </div>
+            </el-tab-pane>
+            <el-tab-pane label="Not Food" class="tab-pane">
+              <span slot="label" style="font-size: large"
+                ><i
+                  class="el-icon-bicycle"
+                  style="font-size: 22px; color: #6457f0"
+                ></i>
+                Exp / Non Food</span
+              >
+              <div>
+                <items-component :items="NonFood_expired"></items-component>
+              </div>
+            </el-tab-pane>
+          </el-tabs>
+        </div>
       </div>
     </section>
   </div>
@@ -99,6 +97,7 @@ import ItemsComponent from "../components//Data-resources/MainItemsComponent.vue
 import SearchInventory from "../components/Data-resources/Search-component/SearchInventoryComponent.vue";
 import ProductDetailsFood from "../components/Data-resources/ProductDetails/ProductDetailsFood.vue";
 import ProductDetailsNonFood from "../components/Data-resources/ProductDetails/ProductDetailsNonFood.vue";
+import UpdateMaster from "../components/Data-resources/Update-master.vue";
 
 export default {
   components: {
@@ -106,6 +105,7 @@ export default {
     SearchInventory,
     ProductDetailsFood,
     ProductDetailsNonFood,
+    UpdateMaster,
   },
   data() {
     return {

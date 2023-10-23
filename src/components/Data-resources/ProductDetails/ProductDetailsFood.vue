@@ -7,48 +7,40 @@
     >
       <el-button @click="addItem" slot="append" icon="el-icon-plus"></el-button>
     </el-input>
-    <base-card>
-      <el-header>
-        <h1 class="header-title">Shopping List</h1>
-      </el-header>
-      <el-table :data="items" style="width: 100%">
-        <el-table-column label="Image" prop="image">
-          <template slot-scope="scope">
-            <img
-              :src="scope.row.image"
-              :alt="scope.row.name"
-              style="max-width: 100px"
-            />
-          </template>
-        </el-table-column>
-        <el-table-column label="Name" prop="name"></el-table-column>
-        <el-table-column label="Price" prop="price"></el-table-column>
-        <el-table-column label="Status" prop="status"></el-table-column>
-        <el-table-column label="Purchase/Expiry">
-          <template slot-scope="scope">
-            <span>{{ scope.row.date }}</span>
-            <br />
-            <span>{{ scope.row.expiry }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="Actions">
-          <template slot-scope="scope">
-            <el-button
-              type="primary"
-              size="x-small"
-              @click="addToCart(scope.row)"
-              >Add to Cart</el-button
-            >
-            <el-button
-              type="danger"
-              size="x-small"
-              @click="deleteItem(scope.row)"
-              >Delete Item</el-button
-            >
-          </template>
-        </el-table-column>
-      </el-table>
-    </base-card>
+    <el-header>
+      <h1 class="header-title">Shopping List</h1>
+    </el-header>
+    <el-table :data="items" style="width: 100%">
+      <el-table-column label="Image" prop="image">
+        <template slot-scope="scope">
+          <img
+            :src="scope.row.image"
+            :alt="scope.row.name"
+            style="max-width: 100px"
+          />
+        </template>
+      </el-table-column>
+      <el-table-column label="Name" prop="name"></el-table-column>
+      <el-table-column label="Price" prop="price"></el-table-column>
+      <el-table-column label="Status" prop="status"></el-table-column>
+      <el-table-column label="Purchase/Expiry">
+        <template slot-scope="scope">
+          <span>{{ scope.row.date }}</span>
+          <br />
+          <span>{{ scope.row.expiry }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column>
+        <template slot-scope="scope">
+          <el-button type="primary" size="x-small" @click="addToCart(scope.row)"
+            >Add to Cart</el-button
+          >
+          <el-button type="danger" size="x-small" @click="deleteItem(scope.row)"
+            >Delete Item</el-button
+          >
+        </template>
+      </el-table-column>
+    </el-table>
   </div>
 </template>
 
@@ -152,21 +144,6 @@ export default {
   margin-top: 10px;
 }
 .el-button {
-  display: inline-block;
-  line-height: 1;
-  white-space: nowrap;
-  cursor: pointer;
-  background: none;
-  border: 0px solid #dcdfe6;
-  color: #606266;
-  text-align: center;
-  box-sizing: border-box;
-  outline: 0;
-  margin: 10px;
-  transition: 0.1s;
-  font-weight: 500;
-  padding: 12px 20px;
-  font-size: 14px;
-  border-radius: 4px;
+  margin: 11px;
 }
 </style>

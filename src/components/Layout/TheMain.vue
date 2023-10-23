@@ -13,6 +13,10 @@
       >
         {{ getExpiredPercentage() + "% Expired" }}
       </el-progress>
+      <el-progress
+        type="circle"
+        :percentage="parseFloat(getExpiredPercentage())"
+      ></el-progress>
       <br />
       <p style="margin-left: 23px; margin-bottom: -18px">Non-Expired Items</p>
       <el-progress
@@ -22,26 +26,10 @@
         status="success"
       >
       </el-progress>
-      <div style="margin-top: 30px; margin-bottom: 50px">
-        <br />
-        <el-progress type="circle" :percentage="0"></el-progress>
-        <el-progress type="circle" :percentage="25"></el-progress>
-        <el-progress
-          type="circle"
-          :percentage="100"
-          status="success"
-        ></el-progress>
-        <el-progress
-          type="circle"
-          :percentage="70"
-          status="warning"
-        ></el-progress>
-        <el-progress
-          type="circle"
-          :percentage="50"
-          status="exception"
-        ></el-progress>
-      </div>
+      <el-progress
+        type="circle"
+        :percentage="parseFloat(getNonExpiredPercentage())"
+      ></el-progress>
     </div>
 
     <el-button @click="downloadLatestReceipt()" type="success">
@@ -49,39 +37,37 @@
     </el-button>
 
     <div v-if="displayResult">
-      <base-card>
-        <el-header>
-          <h1 class="header-title">Purchased Items</h1>
-        </el-header>
-        <section>
-          <el-tabs>
-            <el-tab-pane label="Food"
-              ><span slot="label" style="font-size: large"
-                ><i
-                  class="el-icon-food"
-                  style="font-size: 22px; color: #6457f0"
-                ></i>
-                Food</span
-              >
-              <div>
-                <items-component :items="Food"></items-component>
-              </div>
-            </el-tab-pane>
-            <el-tab-pane label="Not Food">
-              <span slot="label" style="font-size: large"
-                ><i
-                  class="el-icon-bicycle"
-                  style="font-size: 22px; color: #6457f0"
-                ></i>
-                Non Food</span
-              >
-              <div>
-                <items-component :items="NonFood"></items-component>
-              </div>
-            </el-tab-pane>
-          </el-tabs>
-        </section>
-      </base-card>
+      <el-header>
+        <h1 class="header-title">Purchased Items</h1>
+      </el-header>
+      <section>
+        <el-tabs>
+          <el-tab-pane label="Food"
+            ><span slot="label" style="font-size: large"
+              ><i
+                class="el-icon-food"
+                style="font-size: 22px; color: #6457f0"
+              ></i>
+              Food</span
+            >
+            <div>
+              <items-component :items="Food"></items-component>
+            </div>
+          </el-tab-pane>
+          <el-tab-pane label="Not Food">
+            <span slot="label" style="font-size: large"
+              ><i
+                class="el-icon-bicycle"
+                style="font-size: 22px; color: #6457f0"
+              ></i>
+              Non Food</span
+            >
+            <div>
+              <items-component :items="NonFood"></items-component>
+            </div>
+          </el-tab-pane>
+        </el-tabs>
+      </section>
     </div>
     <BarcodeScanDummy class="barcode" ref="BarcodeScanDummy" />
   </el-main>
@@ -170,7 +156,7 @@ export default {
               // console.log("Item:", item);
               // console.log("Is item expired?", (item.Status = "Expired"));
               // Separate non-expired Food items
-              if (item.Status === "Expired") {
+              if (item.status === "Expired") {
                 this.Food_nonexpired.push(item);
                 // console.log("Expired item:", item);
               }
