@@ -22,6 +22,9 @@
               <div>
                 <button class="button">Add to Cart</button>
               </div>
+              <div>
+                <span>{{ item.days_left }}</span>
+              </div>
             </div>
           </li>
         </el-col>

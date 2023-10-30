@@ -13,6 +13,7 @@
     // You can add specific ESLint rules here if needed
   },
   "globals": {
-    "process": true
+    "process": true,
+    "module": true
   }
 }

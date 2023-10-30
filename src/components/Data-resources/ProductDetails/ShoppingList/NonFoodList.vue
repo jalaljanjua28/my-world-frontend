@@ -1,12 +1,5 @@
 <template>
   <div>
-    <el-input
-      v-model="itemName"
-      placeholder="NonFood Item Name"
-      class="input-with-select"
-    >
-      <el-button @click="addItem" slot="append" icon="el-icon-plus"></el-button>
-    </el-input>
     <el-table :data="items" style="width: 100%">
       <el-table-column label="Image">
         <template slot-scope="scope">
@@ -29,12 +22,15 @@
       </el-table-column>
       <el-table-column>
         <template slot-scope="scope">
-          <el-button type="primary" size="x-small" @click="addToCart(scope.row)"
-            >Add to Cart</el-button
-          >
-          <el-button type="danger" size="x-small" @click="deleteItem(scope.row)"
-            >Delete Item</el-button
-          >
+          <el-row>
+            <el-button
+              type="danger"
+              icon="el-icon-delete"
+              circle
+              size="x-small"
+              @click="deleteItem(scope.row)"
+            ></el-button
+          ></el-row>
         </template>
       </el-table-column>
     </el-table>
@@ -55,32 +51,17 @@ export default {
     };
   },
   methods: {
-    addItem() {
-      fetch("https://my-world-app-7nnip2tiwq-as.a.run.app/addItem", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ itemName: this.itemName }),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          this.$message.success(data.message);
-          this.itemName = ""; // Clear the input field
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-          this.$message.error("An error occurred");
-        });
-    },
     deleteItem(itemToDelete) {
-      fetch("https://my-world-app-7nnip2tiwq-as.a.run.app/removeItem", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ itemName: itemToDelete.name }),
-      })
+      fetch(
+        "https://my-world-app-7nnip2tiwq-as.a.run.app/removeItem/Shopping",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ itemName: itemToDelete.name }),
+        }
+      )
         .then((response) => {
           if (response.status === 200) {
             this.$message.success("Item deleted");
@@ -104,13 +85,13 @@ export default {
 .el-input-group__append .el-select,
 .el-input-group__prepend .el-button,
 .el-input-group__prepend .el-select {
-  display: inline-block;
+  /* display: inline-block; */
   margin: -16px -10px;
 }
 .el-table td.el-table__cell div {
   box-sizing: border-box;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
 }
 .el-select .el-input {
   width: 110px;
@@ -122,10 +103,26 @@ export default {
   margin-left: 0px;
   margin-top: 10px;
 }
-.input-with-select .el-input-group__prepend {
-  background-color: #fff;
+.el-button.is-circle {
+  padding: 0px;
+  width: 30px;
+  line-height: 2.5;
+  border-radius: 50%;
+  /* background: none !important; */
 }
-.el-button {
-  margin: 11px;
+.el-button--success {
+  color: #fff !important;
+  background-color: #67c23a !important;
+  border-color: #67c23a !important;
+}
+.el-button--danger {
+  color: #fff !important;
+  background-color: #f56c6c !important;
+  border-color: #f56c6c !important;
+}
+p {
+  display: flex;
+  justify-content: center;
+  font-size: x-large;
 }
 </style>

@@ -1,10 +1,7 @@
 <template>
   <el-main class="main-content">
-    <SearchComponent :Food="Food" :NonFood="NonFood" />
+    <search-main :Food="Food" :NonFood="NonFood" />
     <div>
-      <el-header>
-        <h1 class="header-title">Items progress Bar</h1>
-      </el-header>
       <p style="margin-left: 23px; margin-bottom: -18px">Expired Items</p>
       <el-progress
         :text-inside="true"
@@ -13,33 +10,27 @@
       >
         {{ getExpiredPercentage() + "% Expired" }}
       </el-progress>
-      <el-progress
-        type="circle"
-        :percentage="parseFloat(getExpiredPercentage())"
-      ></el-progress>
-      <br />
       <p style="margin-left: 23px; margin-bottom: -18px">Non-Expired Items</p>
+
       <el-progress
         :text-inside="true"
         :stroke-width="24"
         :percentage="parseFloat(getNonExpiredPercentage())"
         status="success"
+        label="Expired"
       >
       </el-progress>
       <el-progress
         type="circle"
-        :percentage="parseFloat(getNonExpiredPercentage())"
+        :percentage="parseFloat(getExpiredPercentage())"
       ></el-progress>
     </div>
 
     <el-button @click="downloadLatestReceipt()" type="success">
       Click to view Items
     </el-button>
-
+    <br />
     <div v-if="displayResult">
-      <el-header>
-        <h1 class="header-title">Purchased Items</h1>
-      </el-header>
       <section>
         <el-tabs>
           <el-tab-pane label="Food"
@@ -51,7 +42,7 @@
               Food</span
             >
             <div>
-              <items-component :items="Food"></items-component>
+              <items :items="Food"></items>
             </div>
           </el-tab-pane>
           <el-tab-pane label="Not Food">
@@ -63,26 +54,26 @@
               Non Food</span
             >
             <div>
-              <items-component :items="NonFood"></items-component>
+              <items :items="NonFood"></items>
             </div>
           </el-tab-pane>
         </el-tabs>
       </section>
     </div>
-    <BarcodeScanDummy class="barcode" ref="BarcodeScanDummy" />
+    <barcode-dummy class="barcode" ref="BarcodeScanDummy" />
   </el-main>
 </template>
 
 <script>
-import ItemsComponent from "../Data-resources/MainItemsComponent.vue";
-import SearchComponent from "../Data-resources/Search-component/SearchMainComponent.vue";
-import BarcodeScanDummy from "@/views/BarcodeScanDummy.vue";
+import Items from "../Data-resources/ItemsList.vue";
+import SearchMain from "../Data-resources/Search-component/SearchMain.vue";
+import BarcodeDummy from "@/views/BarcodeDummy.vue";
 
 export default {
   components: {
-    ItemsComponent,
-    SearchComponent,
-    BarcodeScanDummy,
+    Items,
+    SearchMain,
+    BarcodeDummy,
   },
   data() {
     return {
@@ -307,6 +298,7 @@ export default {
                     expiry: Food[id].Expiry_Date,
                     price: Food[id].Price,
                     status: Food[id].Status,
+                    days_left: Food[id].Days_Until_Expiry,
                   };
                   Food[id] = item;
                 }
@@ -319,6 +311,7 @@ export default {
                     date: NonFood[id].Date,
                     price: NonFood[id].Price,
                     status: NonFood[id].Status,
+                    days_left: NonFood[id].Days_Until_Expiry,
                   };
                   NonFood[id] = item;
                 }
@@ -346,12 +339,15 @@ export default {
 </script>
 
 <style>
+.el-tabs {
+  margin-top: 40px;
+}
 .barcode {
   display: none;
 }
 .header-title {
   text-align: left;
-  margin-top: 25px;
+  margin-top: 0px;
 }
 .el-breadcrumb__item {
   float: unset;

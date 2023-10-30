@@ -6,105 +6,107 @@
           <el-button icon="el-icon-caret-left">Back</el-button>
         </router-link>
       </el-breadcrumb-item>
+      <el-breadcrumb-item>Shopping List</el-breadcrumb-item>
     </el-breadcrumb>
-    <SearchInventory
-      :ExpiredFood="Food_expired"
-      :ExpiredNonFood="NonFood_expired"
-      :NonExpiredFood="Food_nonexpired"
-      :NonExpiredNonFood="NonFood_nonexpired"
-    />
-    <product-detailsFood
-      :items="Food_expired"
-      @item-deleted="handleItemDeleted"
-    ></product-detailsFood>
-    <product-detailsNonFood
-      :items="NonFood_expired"
-      @item-deleted="handleItemDeleted"
-    ></product-detailsNonFood>
-    <update-master></update-master>
-
-    <section>
-      <div>
-        <div class="tab-container">
-          <el-header>
-            <h1 class="header-title" style="font-size: 2rem">
-              Items Collection
-            </h1>
-          </el-header>
-          <el-tabs
-            type="border-card"
-            style="display: inline-block !important; width: 95%"
-            class="border-tab"
-          >
-            <el-tab-pane label="Food" class="tab-pane"
-              ><span slot="label" style="font-size: large"
-                ><i
-                  class="el-icon-food"
-                  style="font-size: 22px; color: #6457f0"
-                ></i>
-                N-Exp / Food</span
-              >
-              <div>
-                <items-component :items="Food_nonexpired"></items-component>
-              </div>
-            </el-tab-pane>
-            <el-tab-pane label="Not Food" class="tab-pane">
-              <span slot="label" style="font-size: large"
-                ><i
-                  class="el-icon-bicycle"
-                  style="font-size: 22px; color: #6457f0"
-                ></i>
-                N-Exp / Non Food</span
-              >
-              <div>
-                <items-component :items="NonFood_nonexpired"></items-component>
-              </div>
-            </el-tab-pane>
-
-            <el-tab-pane label="Food" class="tab-pane"
-              ><span slot="label" style="font-size: large"
-                ><i
-                  class="el-icon-food"
-                  style="font-size: 22px; color: #6457f0"
-                ></i>
-                Exp / Food</span
-              >
-              <div>
-                <items-component :items="Food_expired"></items-component>
-              </div>
-            </el-tab-pane>
-            <el-tab-pane label="Not Food" class="tab-pane">
-              <span slot="label" style="font-size: large"
-                ><i
-                  class="el-icon-bicycle"
-                  style="font-size: 22px; color: #6457f0"
-                ></i>
-                Exp / Non Food</span
-              >
-              <div>
-                <items-component :items="NonFood_expired"></items-component>
-              </div>
-            </el-tab-pane>
-          </el-tabs>
-        </div>
-      </div>
-    </section>
+    <base-card>
+      <search-inventory
+        :ExpiredFood="Food_expired"
+        :ExpiredNonFood="NonFood_expired"
+        :NonExpiredFood="Food_nonexpired"
+        :NonExpiredNonFood="NonFood_nonexpired"
+      />
+      <el-tabs :tab-position="tabPosition" style="height: auto">
+        <el-tab-pane label="Shopping List">
+          <section>
+            <el-tabs>
+              <el-tab-pane label="Food"
+                ><span slot="label" style="font-size: large"
+                  ><i
+                    class="el-icon-food"
+                    style="font-size: 22px; color: #6457f0"
+                  ></i>
+                  Food</span
+                >
+                <div>
+                  <food-expired
+                    :items="Food_expired"
+                    @item-deleted="handleItemDeleted"
+                  ></food-expired>
+                </div>
+              </el-tab-pane>
+              <el-tab-pane label="Not Food">
+                <span slot="label" style="font-size: large"
+                  ><i
+                    class="el-icon-bicycle"
+                    style="font-size: 22px; color: #6457f0"
+                  ></i>
+                  Non Food</span
+                >
+                <div>
+                  <nonfood-expired
+                    :items="NonFood_expired"
+                    @item-deleted="handleItemDeleted"
+                  ></nonfood-expired>
+                </div>
+              </el-tab-pane>
+            </el-tabs></section
+        ></el-tab-pane>
+        <el-tab-pane label="Master List">
+          <section>
+            <el-tabs>
+              <el-tab-pane label="Food"
+                ><span slot="label" style="font-size: large"
+                  ><i
+                    class="el-icon-food"
+                    style="font-size: 22px; color: #6457f0"
+                  ></i>
+                  Food</span
+                >
+                <div>
+                  <food-nonexpired
+                    :items="Food_nonexpired"
+                    @item-deleted="handleItemDeleted"
+                  ></food-nonexpired>
+                </div>
+              </el-tab-pane>
+              <el-tab-pane label="Not Food">
+                <span slot="label" style="font-size: large"
+                  ><i
+                    class="el-icon-bicycle"
+                    style="font-size: 22px; color: #6457f0"
+                  ></i>
+                  Non Food</span
+                >
+                <div>
+                  <nonfood-nonexpired
+                    :items="NonFood_nonexpired"
+                    @item-deleted="handleItemDeleted"
+                  ></nonfood-nonexpired>
+                </div>
+              </el-tab-pane>
+            </el-tabs></section
+        ></el-tab-pane>
+      </el-tabs>
+      <update-master></update-master>
+    </base-card>
   </div>
 </template>
 
 <script>
-import ItemsComponent from "../components//Data-resources/MainItemsComponent.vue";
-import SearchInventory from "../components/Data-resources/Search-component/SearchInventoryComponent.vue";
-import ProductDetailsFood from "../components/Data-resources/ProductDetails/ProductDetailsFood.vue";
-import ProductDetailsNonFood from "../components/Data-resources/ProductDetails/ProductDetailsNonFood.vue";
+import SearchInventory from "../components/Data-resources/Search-component/SearchInventory.vue";
+import FoodExpired from "../components/Data-resources/ProductDetails/ShoppingList/FoodList.vue";
+import NonfoodExpired from "../components/Data-resources/ProductDetails/ShoppingList/NonFoodList.vue";
+import FoodNonexpired from "../components/Data-resources/ProductDetails/MasterList/FoodList.vue";
+import NonfoodNonexpired from "../components/Data-resources/ProductDetails/MasterList/NonFoodList.vue";
 import UpdateMaster from "../components/Data-resources/Update-master.vue";
 
 export default {
   components: {
-    ItemsComponent,
     SearchInventory,
-    ProductDetailsFood,
-    ProductDetailsNonFood,
+    FoodExpired,
+    NonfoodExpired,
+    FoodNonexpired,
+    NonfoodNonexpired,
     UpdateMaster,
   },
   data() {
@@ -114,6 +116,7 @@ export default {
       Food_nonexpired: [],
       NonFood_nonexpired: [],
       items: [],
+      tabPosition: "left",
     };
   },
   mounted() {
@@ -227,6 +230,7 @@ export default {
                 expiry: Food[id].Expiry_Date,
                 price: Food[id].Price,
                 status: Food[id].Status,
+                days_left: Food[id].Days_Until_Expiry,
               };
               Food[id] = item;
             }
@@ -239,6 +243,7 @@ export default {
                 date: NonFood[id].Date,
                 price: NonFood[id].Price,
                 status: NonFood[id].Status,
+                days_left: NonFood[id].Days_Until_Expiry,
               };
               NonFood[id] = item;
             }
@@ -279,6 +284,7 @@ export default {
   border-radius: 4px;
   padding: 11px 10px;
 }
+
 @media screen and (max-width: 728px) {
   /* Reverse the tab order */
   .tab-container {
@@ -288,6 +294,7 @@ export default {
     min-width: 200px; /* Adjust this width as needed */
   }
 }
+
 @media screen and (min-width: 728px) {
   /* Reverse the tab order */
   .border-tab {

@@ -6,6 +6,7 @@
           <el-button icon="el-icon-caret-left">Back</el-button>
         </router-link>
       </el-breadcrumb-item>
+      <el-breadcrumb-item>Barcode Scan</el-breadcrumb-item>
     </el-breadcrumb>
 
     <el-header>
