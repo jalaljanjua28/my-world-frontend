@@ -13,7 +13,7 @@
       <el-table-column label="Name" prop="name" />
       <el-table-column label="Price" prop="price" />
       <el-table-column label="Status" prop="status" />
-      <el-table-column label="Purchase/Expiry" prop="date">
+      <el-table-column label="DOE" prop="date">
         <template slot-scope="scope">
           <span>{{ scope.row.date }}</span>
           <br />
@@ -52,16 +52,13 @@ export default {
   },
   methods: {
     deleteItem(itemToDelete) {
-      fetch(
-        "https://my-world-app-7nnip2tiwq-as.a.run.app/removeItem/Shopping",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ itemName: itemToDelete.name }),
-        }
-      )
+      fetch("http://127.0.0.1:8081/removeItem/Shopping", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ itemName: itemToDelete.name }),
+      })
         .then((response) => {
           if (response.status === 200) {
             this.$message.success("Item deleted");
@@ -93,6 +90,7 @@ export default {
   display: flex;
   flex-direction: row;
 }
+
 .el-select .el-input {
   width: 110px;
 }
@@ -105,8 +103,8 @@ export default {
 }
 .el-button.is-circle {
   padding: 0px;
-  width: 30px;
-  line-height: 2.5;
+  width: 40px;
+  line-height: 3;
   border-radius: 50%;
   /* background: none !important; */
 }

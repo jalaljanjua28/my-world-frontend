@@ -7,43 +7,49 @@
       @change="searchItems"
     />
     <div v-if="displayResults" class="results-container">
-      <table class="item-table">
-        <tr
-          v-for="(item, index) in filteredItems"
-          :key="index"
-          class="item-row"
-        >
-          <td class="item-image">
-            <img :src="item.image" :alt="item.image" />
-          </td>
-          <td class="item-details">
-            <div class="item-name">Name: {{ item.name }}</div>
-            <div class="item-price">Price: {{ item.price }}</div>
-            <div class="item-status">Status: {{ item.status }}</div>
-            <div class="item-dates">
-              <div class="item-date">Purchase: {{ item.date }}</div>
-              <!-- <div class="item-expiry">Expiry: {{ item.expiry }}</div> -->
-              <div class="item-expiry">Days_left: {{ item.days_left }}</div>
-            </div>
-          </td>
-          <td class="add-to-cart-button">
-            <el-button
-              type="success"
-              icon="el-icon-check"
-              circle
-              size="x-small"
-              @click="addItem(scope.row)"
-            ></el-button>
-            <el-button
-              type="danger"
-              icon="el-icon-delete"
-              circle
-              size="x-small"
-              @click="deleteItem(scope.row)"
-            ></el-button>
-          </td>
-        </tr>
-      </table>
+      <el-table :data="filteredItems" style="width: 100%">
+        <el-table-column label="Image" prop="image">
+          <template slot-scope="scope">
+            <img
+              :src="scope.row.image"
+              :alt="scope.row.name"
+              style="max-width: 100px"
+            />
+          </template>
+        </el-table-column>
+        <el-table-column label="Name" prop="name"></el-table-column>
+        <el-table-column label="Price" prop="price"></el-table-column>
+        <el-table-column label="Status" prop="status"></el-table-column>
+        <el-table-column label="Status" prop="status"></el-table-column>
+        <el-table-column label="DOE">
+          <template slot-scope="scope">
+            <span>{{ scope.row.date }}</span>
+            <br />
+            <span v-if="scope.row.expiry">{{ scope.row.expiry }}</span>
+            <span v-else>Days_left: {{ scope.row.days_left }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column>
+          <template slot-scope="scope">
+            <el-row>
+              <el-button
+                type="success"
+                icon="el-icon-plus"
+                circle
+                size="x-small"
+                @click="addItem(scope.row)"
+              ></el-button>
+              <el-button
+                type="danger"
+                icon="el-icon-delete"
+                circle
+                size="x-small"
+                @click="deleteItem(scope.row)"
+              ></el-button>
+            </el-row>
+          </template>
+        </el-table-column>
+      </el-table>
     </div>
   </div>
 </template>
@@ -59,7 +65,7 @@ export default {
   },
   methods: {
     addItem(itemToAdd) {
-      fetch("https://my-world-app-7nnip2tiwq-as.a.run.app/addItem/shopping", {
+      fetch("http://127.0.0.1:8081/addItem/shopping", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -84,7 +90,7 @@ export default {
     },
     deleteItem(itemToDelete) {
       // Send a request to your backend to delete the item by its name
-      fetch("https://my-world-app-7nnip2tiwq-as.a.run.app/removeItem/Master", {
+      fetch("http://127.0.0.1:8081/removeItem/Master", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

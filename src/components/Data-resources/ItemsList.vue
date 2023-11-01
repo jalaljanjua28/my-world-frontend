@@ -1,35 +1,37 @@
 <template>
   <div>
-    <ul>
-      <el-row>
-        <el-col>
-          <li v-for="(item, index) in items" :key="index">
-            <img :src="item.image" :alt="item.image" />
-            <div>
-              <span>{{ item.name }}</span>
-              <div>
-                <span>{{ item.price }}</span>
-              </div>
-              <div>
-                <span>{{ item.status }}</span>
-              </div>
-              <div class="bottom clearfix">
-                <time class="time">Purchase/Expiry: {{ item.date }} </time>
-              </div>
-              <div class="bottom clearfix">
-                <time class="time"> {{ item.expiry }} </time>
-              </div>
-              <div>
-                <button class="button">Add to Cart</button>
-              </div>
-              <div>
-                <span>{{ item.days_left }}</span>
-              </div>
-            </div>
-          </li>
-        </el-col>
-      </el-row>
-    </ul>
+    <el-table :data="items" style="width: 100%">
+      <el-table-column label="Image">
+        <template slot-scope="scope">
+          <img
+            :src="scope.row.image"
+            :alt="scope.row.name"
+            style="max-width: 100px"
+          />
+        </template>
+      </el-table-column>
+      <el-table-column label="Name" prop="name" />
+      <el-table-column label="Price" prop="price" />
+      <el-table-column label="Status" prop="status" />
+      <el-table-column label="DOE" prop="date">
+        <template slot-scope="scope">
+          <span>{{ scope.row.date }}</span>
+          <br />
+          <span>{{ scope.row.expiry }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column>
+        <template slot-scope="scope">
+          <el-button
+            type="danger"
+            icon="el-icon-delete"
+            circle
+            size="x-small"
+            @click="deleteItem(scope.row)"
+          ></el-button>
+        </template>
+      </el-table-column>
+    </el-table>
   </div>
 </template>
 

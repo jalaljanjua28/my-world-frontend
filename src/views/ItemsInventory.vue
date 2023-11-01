@@ -49,8 +49,10 @@
                   ></nonfood-expired>
                 </div>
               </el-tab-pane>
-            </el-tabs></section
-        ></el-tab-pane>
+            </el-tabs>
+          </section>
+          <delete-all-shopping></delete-all-shopping>
+        </el-tab-pane>
         <el-tab-pane label="Master List">
           <section>
             <el-tabs>
@@ -84,10 +86,13 @@
                   ></nonfood-nonexpired>
                 </div>
               </el-tab-pane>
-            </el-tabs></section
-        ></el-tab-pane>
+            </el-tabs>
+          </section>
+          <delete-all-master></delete-all-master>
+        </el-tab-pane>
       </el-tabs>
       <update-master></update-master>
+      <add-items></add-items>
     </base-card>
   </div>
 </template>
@@ -99,6 +104,9 @@ import NonfoodExpired from "../components/Data-resources/ProductDetails/Shopping
 import FoodNonexpired from "../components/Data-resources/ProductDetails/MasterList/FoodList.vue";
 import NonfoodNonexpired from "../components/Data-resources/ProductDetails/MasterList/NonFoodList.vue";
 import UpdateMaster from "../components/Data-resources/Update-master.vue";
+import AddItems from "../components/Data-resources/AddCustomItem.vue";
+import DeleteAllMaster from "../components/Data-resources/DeleteAllMaster.vue";
+import DeleteAllShopping from "../components/Data-resources/DeleteAllShopping.vue";
 
 export default {
   components: {
@@ -108,6 +116,9 @@ export default {
     FoodNonexpired,
     NonfoodNonexpired,
     UpdateMaster,
+    AddItems,
+    DeleteAllMaster,
+    DeleteAllShopping,
   },
   data() {
     return {
@@ -125,16 +136,13 @@ export default {
   },
   methods: {
     shopping_list() {
-      fetch(
-        "https://my-world-app-7nnip2tiwq-as.a.run.app/get-shopping-list-expired",
-        {
-          method: "GET",
-          mode: "cors",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      )
+      fetch("http://127.0.0.1:8081/get-shopping-list-expired", {
+        method: "GET",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
         .then((response) => {
           if (response.ok) {
             return response.json();
@@ -166,6 +174,7 @@ export default {
                 expiry: Food[id].Expiry_Date,
                 price: Food[id].Price,
                 status: Food[id].Status,
+                days_left: Food[id].Days_Until_Expiry,
               };
               Food[id] = item;
             }
@@ -178,6 +187,7 @@ export default {
                 date: NonFood[id].Date,
                 price: NonFood[id].Price,
                 status: NonFood[id].Status,
+                days_left: NonFood[id].Days_Until_Expiry,
               };
               NonFood[id] = item;
             }
@@ -193,7 +203,7 @@ export default {
         });
     },
     master_list() {
-      fetch("https://my-world-app-7nnip2tiwq-as.a.run.app/get-master-list", {
+      fetch("http://127.0.0.1:8081/get-master-list", {
         method: "GET",
         mode: "cors",
         headers: {

@@ -6,43 +6,50 @@
       class="search-input"
       @change="searchItems"
     />
-    <div v-if="searchResults.length > 0" class="results-container">
-      <table class="item-table">
-        <tr
-          v-for="(item, index) in searchResults"
-          :key="index"
-          class="item-row"
-        >
-          <td class="item-image">
-            <img :src="item.image" :alt="item.image" />
-          </td>
-          <td class="item-details">
-            <div class="item-name">Name: {{ item.name }}</div>
-            <div class="item-price">Price: {{ item.price }}</div>
-            <div class="item-status">Status: {{ item.status }}</div>
-            <div class="item-dates">
-              <div class="item-date">Purchase: {{ item.date }}</div>
-              <div class="item-expiry">Days Left: {{ item.days_left }}</div>
-            </div>
-          </td>
-          <td class="add-to-cart-button">
-            <el-button
-              type="success"
-              icon="el-icon-check"
-              circle
-              size="x-small"
-              @click="addItem(scope.row)"
-            ></el-button>
-            <el-button
-              type="danger"
-              icon="el-icon-delete"
-              circle
-              size="x-small"
-              @click="deleteItem(scope.row)"
-            ></el-button>
-          </td>
-        </tr>
-      </table>
+    <div v-if="displayResults" class="results-container">
+      <el-table :data="searchResults" style="width: 100%">
+        <el-table-column label="Image" prop="image">
+          <template slot-scope="scope">
+            <img
+              :src="scope.row.image"
+              :alt="scope.row.name"
+              style="max-width: 100px"
+            />
+          </template>
+        </el-table-column>
+        <el-table-column label="Name" prop="name"></el-table-column>
+        <el-table-column label="Price" prop="price"></el-table-column>
+        <el-table-column label="Status" prop="status"></el-table-column>
+        <el-table-column label="Status" prop="status"></el-table-column>
+        <el-table-column label="DOE">
+          <template slot-scope="scope">
+            <span>{{ scope.row.date }}</span>
+            <br />
+            <span v-if="scope.row.expiry">{{ scope.row.expiry }}</span>
+            <span v-else>Days_left: {{ scope.row.days_left }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column>
+          <template slot-scope="scope">
+            <el-row>
+              <el-button
+                type="success"
+                icon="el-icon-plus"
+                circle
+                size="x-small"
+                @click="addItem(scope.row)"
+              ></el-button>
+              <!-- <el-button
+                type="danger"
+                icon="el-icon-delete"
+                circle
+                size="x-small"
+                @click="deleteItem(scope.row)"
+              ></el-button> -->
+            </el-row>
+          </template>
+        </el-table-column>
+      </el-table>
     </div>
   </div>
 </template>
@@ -53,11 +60,12 @@ export default {
     return {
       searchQuery: "",
       searchResults: [],
+      displayResults: false,
     };
   },
   methods: {
     addItem(itemToAdd) {
-      fetch("https://my-world-app-7nnip2tiwq-as.a.run.app/addItem/shopping", {
+      fetch("http://127.0.0.1:8081/addItem/shopping", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -82,7 +90,7 @@ export default {
     },
     deleteItem(itemToDelete) {
       // Send a request to your backend to delete the item by its name
-      fetch("https://my-world-app-7nnip2tiwq-as.a.run.app/removeItem/Master", {
+      fetch("http://127.0.0.1:8081/removeItem/Master", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -126,6 +134,7 @@ export default {
       ];
 
       this.searchQuery = "";
+      this.displayResults = true;
     },
   },
   props: {
@@ -136,17 +145,16 @@ export default {
 </script>
 
 <style scoped>
-.search-container {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  flex-direction: column;
+.el-button--danger {
+  color: #fff !important;
+  background-color: #f56c6c !important;
+  border-color: #f56c6c !important;
 }
-
-.search-input {
-  flex-grow: 1;
+.el-button--success {
+  color: #fff !important;
+  background-color: #67c23a !important;
+  border-color: #67c23a !important;
 }
-
 .item-table {
   width: 100%;
   border-collapse: collapse;
@@ -155,9 +163,6 @@ export default {
 
 .item-row {
   border: 1px solid #ccc;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
 .item-image {
@@ -192,17 +197,26 @@ export default {
   background-color: #007bff;
   color: #fff;
   border: none;
-  padding: 12px 16px;
+  padding: 5px 10px;
   cursor: pointer;
+  margin-top: 10px;
 }
-.el-button--danger {
-  color: #fff !important;
-  background-color: #f56c6c !important;
-  border-color: #f56c6c !important;
+.add-to-cart-button[data-v-2b70e14a] {
+  text-align: center;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  margin-top: -15px;
 }
-.el-button--success {
-  color: #fff !important;
-  background-color: #67c23a !important;
-  border-color: #67c23a !important;
+.add-to-cart-button button:hover {
+  background-color: #0056b3;
+}
+.item-table[data-v-2b70e14a][data-v-2b70e14a] {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
 </style>

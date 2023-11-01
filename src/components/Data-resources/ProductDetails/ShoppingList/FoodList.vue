@@ -13,13 +13,15 @@
       <el-table-column label="Name" prop="name"></el-table-column>
       <el-table-column label="Price" prop="price"></el-table-column>
       <el-table-column label="Status" prop="status"></el-table-column>
-      <el-table-column label="Purchase/Expiry">
+      <el-table-column label="DOE">
         <template slot-scope="scope">
           <span>{{ scope.row.date }}</span>
           <br />
           <span>{{ scope.row.expiry }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="Days Left" prop="days_left"></el-table-column>
+
       <el-table-column>
         <template slot-scope="scope">
           <el-row>
@@ -55,16 +57,13 @@ export default {
   methods: {
     deleteItem(itemToDelete) {
       // Send a request to your backend to delete the item by its name
-      fetch(
-        "https://my-world-app-7nnip2tiwq-as.a.run.app/removeItem/Shopping",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ itemName: itemToDelete.name }),
-        }
-      )
+      fetch("http://127.0.0.1:8081/removeItem/Shopping", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ itemName: itemToDelete.name }),
+      })
         .then((response) => {
           if (response.status === 200) {
             this.$message({
@@ -104,7 +103,9 @@ export default {
   box-sizing: border-box;
   display: flex;
   flex-direction: row;
+  padding-right: 27px;
 }
+
 .el-select .el-input {
   width: 110px;
 }
@@ -117,10 +118,9 @@ export default {
 }
 .el-button.is-circle {
   padding: 0px;
-  width: 30px;
-  line-height: 2.5;
+  width: 40px;
+  line-height: 3;
   border-radius: 50%;
-  /* background: none !important; */
 }
 .el-button--success {
   color: #fff !important;

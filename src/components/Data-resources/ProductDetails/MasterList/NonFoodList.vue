@@ -13,7 +13,7 @@
       <el-table-column label="Name" prop="name" />
       <el-table-column label="Price" prop="price" />
       <el-table-column label="Status" prop="status" />
-      <el-table-column label="Purchase/Expiry" prop="date">
+      <el-table-column label="DOE" prop="date">
         <template slot-scope="scope">
           <span>{{ scope.row.date }}</span>
           <br />
@@ -60,7 +60,7 @@ export default {
   },
   methods: {
     addItem(itemToAdd) {
-      fetch("https://my-world-app-7nnip2tiwq-as.a.run.app/addItem/shopping", {
+      fetch("http://127.0.0.1:8081/addItem/shopping", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -78,7 +78,7 @@ export default {
         });
     },
     deleteItem(itemToDelete) {
-      fetch("https://my-world-app-7nnip2tiwq-as.a.run.app/removeItem/Master", {
+      fetch("http://127.0.0.1:8081/removeItem/Master", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

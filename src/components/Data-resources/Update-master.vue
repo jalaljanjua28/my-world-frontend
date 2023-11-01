@@ -1,23 +1,25 @@
 <template>
-  <el-container>
+  <el-container class="update-expiry-container">
     <el-header>
-      <h1>Update Master Item Expiry</h1>
+      <h1 class="update-expiry-title">Update Master Item Expiry</h1>
     </el-header>
-    <el-main>
-      <el-form :model="form" label-width="120px">
-        <el-form-item label="Item Name">
-          <el-input v-model="form.item_name"></el-input>
-        </el-form-item>
-        <el-form-item label="Days to Extend">
-          <el-input v-model="form.days_to_extend" type="number"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="updateExpiry"
-            >Update Expiry</el-button
-          >
-        </el-form-item>
-      </el-form>
-    </el-main>
+    <base-card>
+      <el-main>
+        <el-form :model="form" label-width="120px">
+          <el-form-item label="Item Name">
+            <el-input v-model="form.item_name"></el-input>
+          </el-form-item>
+          <el-form-item label="Days to Extend">
+            <el-input v-model="form.days_to_extend" type="number"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="updateExpiry"
+              >Update Expiry</el-button
+            >
+          </el-form-item>
+        </el-form>
+      </el-main>
+    </base-card>
   </el-container>
 </template>
 
@@ -35,16 +37,12 @@ export default {
   },
   methods: {
     updateExpiry() {
-      // Send a POST request to your server with form data
       const requestData = {
         item_name: this.form.item_name,
         days_to_extend: this.form.days_to_extend,
       };
       axios
-        .post(
-          "https://my-world-app-7nnip2tiwq-as.a.run.app/update-master-item-expiry",
-          requestData
-        )
+        .post("http://127.0.0.1:8081/update-master-item-expiry", requestData)
         .then((response) => {
           console.log(response.data);
         })
@@ -59,9 +57,24 @@ export default {
 };
 </script>
 
-<style>
-.el-form-item__label {
-  text-align: center !important;
-  line-height: 65px !important;
+<style scoped>
+.update-expiry-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.update-expiry-title {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.el-form-item {
+  margin-bottom: 15px;
+}
+
+.el-button {
+  margin-top: 15px;
 }
 </style>

@@ -26,7 +26,11 @@
       ></el-progress>
     </div>
 
-    <el-button @click="downloadLatestReceipt()" type="success">
+    <el-button
+      @click="downloadLatestReceipt()"
+      type="success"
+      style="margin-left: 15px"
+    >
       Click to view Items
     </el-button>
     <br />
@@ -60,7 +64,7 @@
         </el-tabs>
       </section>
     </div>
-    <barcode-dummy class="barcode" ref="BarcodeScanDummy" />
+    <barcode-dummy class="barcode" ref="BarcodeDummy" />
   </el-main>
 </template>
 
@@ -96,21 +100,18 @@ export default {
     //   this.fileData = JSON.parse(storedFileData);
     //   this.useFileData(); // Call the function to process the data
     // }
-    this.$refs.BarcodeScanDummy.simulateUpload();
-    console.log("simulateUpload function triggered in BarcodeScanDummy.vue");
+    this.$refs.BarcodeDummy.simulateUpload();
+    console.log("simulateUpload function triggered in BarcodeDummy.vue");
   },
   methods: {
     shopping_list() {
-      fetch(
-        "https://my-world-app-7nnip2tiwq-as.a.run.app/get-shopping-list-expired",
-        {
-          method: "GET",
-          mode: "cors",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      )
+      fetch("http://127.0.0.1:8081/get-shopping-list-expired", {
+        method: "GET",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
         .then((response) => {
           if (response.ok) {
             return response.json();
@@ -253,16 +254,13 @@ export default {
     //   // }
     // },
     downloadLatestReceipt() {
-      fetch(
-        "https://my-world-app-7nnip2tiwq-as.a.run.app/serve-latest-receipt-data",
-        {
-          method: "GET",
-          mode: "cors",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      )
+      fetch("http://127.0.0.1:8081/serve-latest-receipt-data", {
+        method: "GET",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
         .then((response) => {
           if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);

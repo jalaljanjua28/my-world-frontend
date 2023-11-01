@@ -13,7 +13,7 @@
       <el-table-column label="Name" prop="name"></el-table-column>
       <el-table-column label="Price" prop="price"></el-table-column>
       <el-table-column label="Status" prop="status"></el-table-column>
-      <el-table-column label="Purchase/Expiry">
+      <el-table-column label="DOE">
         <template slot-scope="scope">
           <span>{{ scope.row.date }}</span>
           <br />
@@ -26,7 +26,7 @@
           <el-row>
             <el-button
               type="success"
-              icon="el-icon-check"
+              icon="el-icon-plus"
               circle
               size="x-small"
               @click="addItem(scope.row)"
@@ -62,7 +62,7 @@ export default {
 
   methods: {
     addItem(itemToAdd) {
-      fetch("https://my-world-app-7nnip2tiwq-as.a.run.app/addItem/shopping", {
+      fetch("http://127.0.0.1:8081/addItem/shopping", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -87,7 +87,7 @@ export default {
     },
     deleteItem(itemToDelete) {
       // Send a request to your backend to delete the item by its name
-      fetch("https://my-world-app-7nnip2tiwq-as.a.run.app/removeItem/Master", {
+      fetch("http://127.0.0.1:8081/removeItem/Master", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -133,6 +133,9 @@ export default {
   box-sizing: border-box;
   display: flex;
   flex-direction: row;
+}
+.el-table th.el-table__cell > .cell {
+  padding-right: 32px;
 }
 .el-select .el-input {
   width: 110px;
