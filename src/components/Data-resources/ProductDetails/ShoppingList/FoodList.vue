@@ -20,7 +20,6 @@
           <span>{{ scope.row.expiry }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Days Left" prop="days_left"></el-table-column>
 
       <el-table-column>
         <template slot-scope="scope">
@@ -78,6 +77,7 @@ export default {
             // Item not found or other error, handle accordingly
             console.error("Error deleting item.");
           }
+          location.reload();
         })
         .catch((error) => {
           console.error("Error:", error);

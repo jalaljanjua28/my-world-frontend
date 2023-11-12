@@ -21,6 +21,36 @@
         </template>
       </el-table-column>
       <el-table-column label="Days Left" prop="days_left"></el-table-column>
+      <el-table-column label="Add Expiry"
+        >"
+        <template slot-scope="scope">
+          <el-button
+            type="primary"
+            icon="el-icon-plus"
+            circle
+            size="x-small"
+            @click="addExpiry(scope.row)"
+          ></el-button>
+          <el-dialog :visible.sync="dialogVisible" title="Add Expiry">
+            <el-form :model="form" label-width="120px">
+              <el-form-item label="Item Name">
+                <el-input v-model="form.item_name" disabled></el-input>
+              </el-form-item>
+              <el-form-item label="Days to Extend">
+                <el-input
+                  v-model="form.days_to_extend"
+                  type="number"
+                ></el-input>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" @click="updateExpiry"
+                  >Update Expiry</el-button
+                >
+              </el-form-item>
+            </el-form>
+          </el-dialog>
+        </template>
+      </el-table-column>
       <el-table-column>
         <template slot-scope="scope">
           <el-row>
@@ -56,6 +86,13 @@ export default {
   data() {
     return {
       itemName: "",
+      selectOptions: [],
+      dialogVisible: false, // Control the visibility of the dialog
+
+      form: {
+        item_name: "",
+        days_to_extend: 0,
+      },
     };
   },
   methods: {
@@ -76,6 +113,7 @@ export default {
           console.error("Error:", error);
           this.$message.error("An error occurred");
         });
+      location.reload();
     },
     deleteItem(itemToDelete) {
       fetch("http://127.0.0.1:8081/removeItem/Master", {
@@ -98,6 +136,49 @@ export default {
           console.error("Error:", error);
           this.$message.error("An error occurred");
         });
+      location.reload();
+    },
+    addExpiry(item) {
+      // Open the dialog to add expiry
+      this.form.item_name = item.name; // Pre-fill item name in the form
+      this.form.days_to_extend = 0;
+      this.dialogVisible = true;
+      // Reset days to extend
+      // Show the dialog here (you might have a dialog component or use a modal library)
+    },
+    updateExpiry() {
+      // Update the expiry date logic goes here
+      fetch("http://127.0.0.1:8081/update-master-item-expiry", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          item_name: this.form.item_name,
+          days_to_extend: this.form.days_to_extend,
+        }),
+      })
+        .then((response) => {
+          if (response.status === 200) {
+            // Expiry updated successfully, handle accordingly
+            this.$message({
+              message: "Expiry updated",
+              type: "success",
+            });
+            // Close the dialog here (if using a dialog component or modal library)
+          } else {
+            // Expiry update failed, handle accordingly
+            console.error("Error updating expiry.");
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          this.$message({
+            message: "An error occurred",
+            type: "error",
+          });
+        });
+      location.reload();
     },
   },
 };

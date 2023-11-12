@@ -77,4 +77,7 @@ export default {
 .el-button {
   margin-top: 15px;
 }
+div[data-v-48bb6248] {
+  width: -webkit-fill-available !important;
+}
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="search-container">
+  <div class="search-container" style="width: 100%">
     <el-input
       v-model="searchQuery"
       placeholder="Search for items"
@@ -39,13 +39,6 @@
                 size="x-small"
                 @click="addItem(scope.row)"
               ></el-button>
-              <!-- <el-button
-                type="danger"
-                icon="el-icon-delete"
-                circle
-                size="x-small"
-                @click="deleteItem(scope.row)"
-              ></el-button> -->
             </el-row>
           </template>
         </el-table-column>
@@ -87,6 +80,7 @@ export default {
             type: "error",
           });
         });
+      location.reload();
     },
     deleteItem(itemToDelete) {
       // Send a request to your backend to delete the item by its name
@@ -119,6 +113,7 @@ export default {
             type: "error",
           });
         });
+      location.reload();
     },
     searchItems() {
       // Implement search logic here

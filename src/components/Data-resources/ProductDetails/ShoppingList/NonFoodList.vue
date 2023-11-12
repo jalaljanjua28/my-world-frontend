@@ -72,6 +72,7 @@ export default {
           console.error("Error:", error);
           this.$message.error("An error occurred");
         });
+      location.reload();
     },
   },
 };

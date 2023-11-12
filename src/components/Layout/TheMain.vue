@@ -1,30 +1,6 @@
 <template>
   <el-main class="main-content">
     <search-main :Food="Food" :NonFood="NonFood" />
-    <div>
-      <p style="margin-left: 23px; margin-bottom: -18px">Expired Items</p>
-      <el-progress
-        :text-inside="true"
-        :stroke-width="26"
-        :percentage="parseFloat(getExpiredPercentage())"
-      >
-        {{ getExpiredPercentage() + "% Expired" }}
-      </el-progress>
-      <p style="margin-left: 23px; margin-bottom: -18px">Non-Expired Items</p>
-
-      <el-progress
-        :text-inside="true"
-        :stroke-width="24"
-        :percentage="parseFloat(getNonExpiredPercentage())"
-        status="success"
-        label="Expired"
-      >
-      </el-progress>
-      <el-progress
-        type="circle"
-        :percentage="parseFloat(getExpiredPercentage())"
-      ></el-progress>
-    </div>
 
     <el-button
       @click="downloadLatestReceipt()"
@@ -63,6 +39,25 @@
           </el-tab-pane>
         </el-tabs>
       </section>
+    </div>
+    <div>
+      <p style="margin-left: 23px; margin-bottom: -18px">Expired Items</p>
+      <el-progress
+        :text-inside="true"
+        :stroke-width="26"
+        :percentage="parseFloat(getExpiredPercentage())"
+      >
+        {{ getExpiredPercentage() + "% Expired" }}
+      </el-progress>
+      <p style="margin-left: 23px; margin-bottom: -18px">Non-Expired Items</p>
+      <el-progress
+        :text-inside="true"
+        :stroke-width="24"
+        :percentage="parseFloat(getNonExpiredPercentage())"
+        status="success"
+        label="Expired"
+      >
+      </el-progress>
     </div>
     <barcode-dummy class="barcode" ref="BarcodeDummy" />
   </el-main>
@@ -144,13 +139,9 @@ export default {
                 status: Food[id].Status,
               };
               Food[id] = item;
-              // Log the item and the condition result
-              // console.log("Item:", item);
-              // console.log("Is item expired?", (item.Status = "Expired"));
-              // Separate non-expired Food items
+
               if (item.status === "Expired") {
                 this.Food_nonexpired.push(item);
-                // console.log("Expired item:", item);
               }
             }
             this.Food = Food;

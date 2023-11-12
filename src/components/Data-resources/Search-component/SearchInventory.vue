@@ -87,6 +87,7 @@ export default {
             type: "error",
           });
         });
+      location.reload();
     },
     deleteItem(itemToDelete) {
       // Send a request to your backend to delete the item by its name
@@ -119,6 +120,7 @@ export default {
             type: "error",
           });
         });
+      location.reload();
     },
     searchItems() {
       // Implement search logic here

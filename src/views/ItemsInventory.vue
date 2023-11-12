@@ -16,44 +16,14 @@
         :NonExpiredNonFood="NonFood_nonexpired"
       />
       <el-tabs :tab-position="tabPosition" style="height: auto">
-        <el-tab-pane label="Shopping List">
-          <section>
-            <el-tabs>
-              <el-tab-pane label="Food"
-                ><span slot="label" style="font-size: large"
-                  ><i
-                    class="el-icon-food"
-                    style="font-size: 22px; color: #6457f0"
-                  ></i>
-                  Food</span
-                >
-                <div>
-                  <food-expired
-                    :items="Food_expired"
-                    @item-deleted="handleItemDeleted"
-                  ></food-expired>
-                </div>
-              </el-tab-pane>
-              <el-tab-pane label="Not Food">
-                <span slot="label" style="font-size: large"
-                  ><i
-                    class="el-icon-bicycle"
-                    style="font-size: 22px; color: #6457f0"
-                  ></i>
-                  Non Food</span
-                >
-                <div>
-                  <nonfood-expired
-                    :items="NonFood_expired"
-                    @item-deleted="handleItemDeleted"
-                  ></nonfood-expired>
-                </div>
-              </el-tab-pane>
-            </el-tabs>
-          </section>
-          <delete-all-shopping></delete-all-shopping>
-        </el-tab-pane>
-        <el-tab-pane label="Master List">
+        <el-tab-pane label="Non Expired" style="margin-top: -40px"
+          ><span slot="label" style="font-size: x-large"
+            ><i
+              class="el-icon-success"
+              style="font-size: 22px; color: #6457f0"
+            ></i>
+            Non Expired</span
+          >
           <section>
             <el-tabs>
               <el-tab-pane label="Food"
@@ -90,9 +60,112 @@
           </section>
           <delete-all-master></delete-all-master>
         </el-tab-pane>
+        <el-tab-pane label="Expired" style="margin-top: -40px"
+          ><span slot="label" style="font-size: x-large"
+            ><i
+              class="el-icon-error"
+              style="font-size: 22px; color: #6457f0"
+            ></i>
+            Expired</span
+          >
+          <section>
+            <el-tabs>
+              <el-tab-pane label="Food"
+                ><span slot="label" style="font-size: large"
+                  ><i
+                    class="el-icon-food"
+                    style="font-size: 22px; color: #6457f0"
+                  ></i>
+                  Food</span
+                >
+                <div>
+                  <food-expired
+                    :items="Food_expired"
+                    @item-deleted="handleItemDeleted"
+                  ></food-expired>
+                </div>
+              </el-tab-pane>
+              <el-tab-pane label="Not Food">
+                <span slot="label" style="font-size: large"
+                  ><i
+                    class="el-icon-bicycle"
+                    style="font-size: 22px; color: #6457f0"
+                  ></i>
+                  Non Food</span
+                >
+                <div>
+                  <nonfood-expired
+                    :items="NonFood_expired"
+                    @item-deleted="handleItemDeleted"
+                  ></nonfood-expired>
+                </div>
+              </el-tab-pane>
+            </el-tabs>
+          </section>
+          <delete-all-shopping></delete-all-shopping>
+        </el-tab-pane>
+        <el-tab-pane label="Shopping" style="margin-top: -40px"
+          ><span slot="label" style="font-size: x-large"
+            ><i
+              class="el-icon-goods"
+              style="font-size: 22px; color: #6457f0"
+            ></i>
+            Shopping List</span
+          >
+          <section>
+            <el-tabs>
+              <el-tab-pane label="Food"
+                ><span slot="label" style="font-size: large"
+                  ><i
+                    class="el-icon-food"
+                    style="font-size: 22px; color: #6457f0"
+                  ></i>
+                  Food</span
+                >
+                <div>
+                  <food-expired
+                    :items="Food_expired"
+                    @item-deleted="handleItemDeleted"
+                  ></food-expired>
+                  <food-nonexpired
+                    :items="Food_nonexpired"
+                    @item-deleted="handleItemDeleted"
+                  ></food-nonexpired>
+                </div>
+              </el-tab-pane>
+              <el-tab-pane label="Not Food">
+                <span slot="label" style="font-size: large"
+                  ><i
+                    class="el-icon-bicycle"
+                    style="font-size: 22px; color: #6457f0"
+                  ></i>
+                  Non Food</span
+                >
+                <div>
+                  <nonfood-expired
+                    :items="NonFood_expired"
+                    @item-deleted="handleItemDeleted"
+                  ></nonfood-expired>
+                </div>
+              </el-tab-pane>
+            </el-tabs>
+          </section>
+          <delete-all-shopping></delete-all-shopping>
+        </el-tab-pane>
       </el-tabs>
-      <update-master></update-master>
-      <add-items></add-items>
+      <div>
+        <el-button
+          type="primary"
+          icon="el-icon-plus"
+          size="x-small"
+          @click="openDialog"
+          style="padding: 10px 17px"
+          >Add Item</el-button
+        >
+        <el-dialog :visible.sync="dialogVisible" title="Add Item">
+          <add-items @item-added="closeDialog" />
+        </el-dialog>
+      </div>
     </base-card>
   </div>
 </template>
@@ -103,7 +176,6 @@ import FoodExpired from "../components/Data-resources/ProductDetails/ShoppingLis
 import NonfoodExpired from "../components/Data-resources/ProductDetails/ShoppingList/NonFoodList.vue";
 import FoodNonexpired from "../components/Data-resources/ProductDetails/MasterList/FoodList.vue";
 import NonfoodNonexpired from "../components/Data-resources/ProductDetails/MasterList/NonFoodList.vue";
-import UpdateMaster from "../components/Data-resources/Update-master.vue";
 import AddItems from "../components/Data-resources/AddCustomItem.vue";
 import DeleteAllMaster from "../components/Data-resources/DeleteAllMaster.vue";
 import DeleteAllShopping from "../components/Data-resources/DeleteAllShopping.vue";
@@ -115,7 +187,6 @@ export default {
     NonfoodExpired,
     FoodNonexpired,
     NonfoodNonexpired,
-    UpdateMaster,
     AddItems,
     DeleteAllMaster,
     DeleteAllShopping,
@@ -127,7 +198,9 @@ export default {
       Food_nonexpired: [],
       NonFood_nonexpired: [],
       items: [],
-      tabPosition: "left",
+      tabPosition: "top",
+      dialogVisible: false,
+      dialogData: {}, // Data to pass to the Add Item component
     };
   },
   mounted() {
@@ -135,6 +208,12 @@ export default {
     this.shopping_list();
   },
   methods: {
+    openDialog() {
+      this.dialogVisible = true;
+    },
+    closeDialog() {
+      this.dialogVisible = false;
+    },
     shopping_list() {
       fetch("http://127.0.0.1:8081/get-shopping-list-expired", {
         method: "GET",
@@ -276,23 +355,11 @@ export default {
 </script>
 
 <style scoped>
+.el-tabs__item {
+  background: red;
+}
 .el-button {
-  display: inline-block;
-  line-height: 1;
-  white-space: nowrap;
-  cursor: pointer;
-  background: none;
   border: 0px solid #dcdfe6;
-  color: #606266;
-  text-align: center;
-  box-sizing: border-box;
-  outline: 0;
-  margin: 10px;
-  transition: 0.1s;
-  font-weight: 500;
-  font-size: 14px;
-  border-radius: 4px;
-  padding: 11px 10px;
 }
 
 @media screen and (max-width: 728px) {
@@ -310,5 +377,8 @@ export default {
   .border-tab {
     width: 100%;
   }
+}
+.el-form-item__label {
+  line-height: 60px;
 }
 </style>

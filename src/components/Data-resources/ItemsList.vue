@@ -55,4 +55,13 @@ li {
   margin-right: 30px;
   margin-top: 20px;
 }
+.el-table .el-table__cell {
+  padding: 6px 0;
+  min-width: 0;
+  box-sizing: border-box;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+  position: relative;
+  text-align: left;
+}
 </style>

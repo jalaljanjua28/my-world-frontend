@@ -7,7 +7,6 @@
     "paths": {
       "@/*": ["src/*"]
     },
-    "types": ["node", "body-parser"],
     "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
   }
 }
