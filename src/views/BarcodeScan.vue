@@ -15,7 +15,7 @@
     <base-card>
       <el-upload
         class="upload-demo"
-        action="http://127.0.0.1:8081/image-process-upload-create"
+        action="https://my-world-app-7nnip2tiwq-as.a.run.app/image-process-upload-create"
         ref="fileInput"
         :auto-upload="false"
         :on-change="onFileChange"
@@ -48,7 +48,7 @@ import axios from "axios";
 
 // Create a custom Axios instance with a progress event
 const axiosInstance = axios.create();
-axiosInstance.defaults.baseURL = "http://127.0.0.1:8081"; // Set your API base URL
+axiosInstance.defaults.baseURL = "https://my-world-app-7nnip2tiwq-as.a.run.app"; // Set your API base URL
 
 export default {
   data() {

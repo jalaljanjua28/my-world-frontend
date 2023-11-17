@@ -55,7 +55,10 @@ export default {
         item_day_left: this.form.item_day_left,
       };
       axios
-        .post("http://127.0.0.1:8081/add-custom-item-shopping", requestData)
+        .post(
+          "https://my-world-app-7nnip2tiwq-as.a.run.app/add-custom-item-shopping",
+          requestData
+        )
         .then((response) => {
           console.log(response.data);
           this.$emit("item-added", requestData); // Emit an event with the added item data

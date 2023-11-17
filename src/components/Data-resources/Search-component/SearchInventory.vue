@@ -65,7 +65,7 @@ export default {
   },
   methods: {
     addItem(itemToAdd) {
-      fetch("http://127.0.0.1:8081/addItem/shopping", {
+      fetch("https://my-world-app-7nnip2tiwq-as.a.run.app/addItem/shopping", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -91,7 +91,7 @@ export default {
     },
     deleteItem(itemToDelete) {
       // Send a request to your backend to delete the item by its name
-      fetch("http://127.0.0.1:8081/removeItem/Master", {
+      fetch("https://my-world-app-7nnip2tiwq-as.a.run.app/removeItem/Master", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

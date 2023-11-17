@@ -16,7 +16,7 @@
         :NonExpiredNonFood="NonFood_nonexpired"
       />
       <el-tabs :tab-position="tabPosition" style="height: auto">
-        <el-tab-pane label="Non Expired" style="margin-top: -40px"
+        <el-tab-pane label="Non Expired" style=""
           ><span slot="label" style="font-size: x-large"
             ><i
               class="el-icon-success"
@@ -60,7 +60,7 @@
           </section>
           <delete-all-master></delete-all-master>
         </el-tab-pane>
-        <el-tab-pane label="Expired" style="margin-top: -40px"
+        <el-tab-pane label="Expired" style=""
           ><span slot="label" style="font-size: x-large"
             ><i
               class="el-icon-error"
@@ -102,9 +102,9 @@
               </el-tab-pane>
             </el-tabs>
           </section>
-          <delete-all-shopping></delete-all-shopping>
+          <delete-all-shopping-expired></delete-all-shopping-expired>
         </el-tab-pane>
-        <el-tab-pane label="Shopping" style="margin-top: -40px"
+        <el-tab-pane label="Shopping" style=""
           ><span slot="label" style="font-size: x-large"
             ><i
               class="el-icon-goods"
@@ -123,14 +123,10 @@
                   Food</span
                 >
                 <div>
-                  <food-expired
-                    :items="Food_expired"
+                  <items-list
+                    :items="Food"
                     @item-deleted="handleItemDeleted"
-                  ></food-expired>
-                  <food-nonexpired
-                    :items="Food_nonexpired"
-                    @item-deleted="handleItemDeleted"
-                  ></food-nonexpired>
+                  ></items-list>
                 </div>
               </el-tab-pane>
               <el-tab-pane label="Not Food">
@@ -142,10 +138,10 @@
                   Non Food</span
                 >
                 <div>
-                  <nonfood-expired
-                    :items="NonFood_expired"
+                  <items-list
+                    :items="NonFood"
                     @item-deleted="handleItemDeleted"
-                  ></nonfood-expired>
+                  ></items-list>
                 </div>
               </el-tab-pane>
             </el-tabs>
@@ -179,9 +175,12 @@ import NonfoodNonexpired from "../components/Data-resources/ProductDetails/Maste
 import AddItems from "../components/Data-resources/AddCustomItem.vue";
 import DeleteAllMaster from "../components/Data-resources/DeleteAllMaster.vue";
 import DeleteAllShopping from "../components/Data-resources/DeleteAllShopping.vue";
+import DeleteAllShoppingExpired from "../components/Data-resources/DeleteAllShoppingExpired.vue";
+import ItemsList from "../components/Data-resources/ItemsList.vue";
 
 export default {
   components: {
+    ItemsList,
     SearchInventory,
     FoodExpired,
     NonfoodExpired,
@@ -190,9 +189,12 @@ export default {
     AddItems,
     DeleteAllMaster,
     DeleteAllShopping,
+    DeleteAllShoppingExpired,
   },
   data() {
     return {
+      Food: [],
+      NonFood: [],
       Food_expired: [],
       NonFood_expired: [],
       Food_nonexpired: [],
@@ -206,6 +208,7 @@ export default {
   mounted() {
     this.master_list();
     this.shopping_list();
+    this.shopping_list_expired();
   },
   methods: {
     openDialog() {
@@ -214,14 +217,17 @@ export default {
     closeDialog() {
       this.dialogVisible = false;
     },
-    shopping_list() {
-      fetch("http://127.0.0.1:8081/get-shopping-list-expired", {
-        method: "GET",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
+    shopping_list_expired() {
+      fetch(
+        "https://my-world-app-7nnip2tiwq-as.a.run.app/get-shopping-list-expired",
+        {
+          method: "GET",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
         .then((response) => {
           if (response.ok) {
             return response.json();
@@ -281,8 +287,75 @@ export default {
           console.error("Error:", error);
         });
     },
+    shopping_list() {
+      fetch("https://my-world-app-7nnip2tiwq-as.a.run.app/get-shopping-list", {
+        method: "GET",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error("Failed to fetch data.");
+          }
+        })
+        .then((data) => {
+          try {
+            const base64Data = data.data;
+            const binaryData = new Uint8Array(
+              [...atob(base64Data)].map((char) => char.charCodeAt(0))
+            );
+
+            const textDecoder = new TextDecoder();
+            const decodedData = textDecoder.decode(binaryData);
+
+            const parsedData = JSON.parse(decodedData);
+
+            const Food = parsedData.Food;
+            const NonFood = parsedData.Not_Food;
+
+            for (const id in Food) {
+              const item = {
+                id: parseInt(id),
+                name: Food[id].Name,
+                image: Food[id].Image,
+                date: Food[id].Date,
+                expiry: Food[id].Expiry_Date,
+                price: Food[id].Price,
+                status: Food[id].Status,
+                days_left: Food[id].Days_Until_Expiry,
+              };
+              Food[id] = item;
+            }
+
+            for (const id in NonFood) {
+              const item = {
+                id: parseInt(id),
+                name: NonFood[id].Name,
+                image: NonFood[id].Image,
+                date: NonFood[id].Date,
+                price: NonFood[id].Price,
+                status: NonFood[id].Status,
+                days_left: NonFood[id].Days_Until_Expiry,
+              };
+              NonFood[id] = item;
+            }
+
+            this.Food = Food;
+            this.NonFood = NonFood;
+          } catch (error) {
+            console.error("Error:", error);
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    },
     master_list() {
-      fetch("http://127.0.0.1:8081/get-master-list", {
+      fetch("https://my-world-app-7nnip2tiwq-as.a.run.app/get-master-list", {
         method: "GET",
         mode: "cors",
         headers: {

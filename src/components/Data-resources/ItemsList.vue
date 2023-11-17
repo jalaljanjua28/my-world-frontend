@@ -46,6 +46,44 @@ export default {
   data() {
     return {};
   },
+  methods: {
+    deleteItem(itemToDelete) {
+      // Send a request to your backend to delete the item by its name
+      fetch(
+        "https://my-world-app-7nnip2tiwq-as.a.run.app/removeItem/Shopping",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ itemName: itemToDelete.name }),
+        }
+      )
+        .then((response) => {
+          if (response.status === 200) {
+            this.$message({
+              message: "Item deleted",
+              type: "success",
+            });
+            // Item deleted successfully, update UI or show a message
+            console.log(`Item '${itemToDelete.name}' deleted successfully.`);
+            // Remove the item from the items array
+            this.$emit("item-deleted", itemToDelete);
+          } else {
+            // Item not found or other error, handle accordingly
+            console.error("Error deleting item.");
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          this.$message({
+            message: "An error occurred",
+            type: "error",
+          });
+        });
+      location.reload();
+    },
+  },
 };
 </script>
 

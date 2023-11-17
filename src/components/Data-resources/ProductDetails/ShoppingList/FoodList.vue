@@ -25,6 +25,13 @@
         <template slot-scope="scope">
           <el-row>
             <el-button
+              type="success"
+              icon="el-icon-plus"
+              circle
+              size="x-small"
+              @click="addItem(scope.row)"
+            ></el-button>
+            <el-button
               type="danger"
               icon="el-icon-delete"
               circle
@@ -54,15 +61,46 @@ export default {
   },
 
   methods: {
+    addItem(itemToAdd) {
+      fetch(
+        "https://my-world-app-7nnip2tiwq-as.a.run.app/addItem/shopping-expired",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ itemName: itemToAdd.name }),
+        }
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          this.$message({
+            message: data.message,
+            type: "success",
+          });
+          this.itemName = ""; // Clear the input field
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          this.$message({
+            message: "An error occurred",
+            type: "error",
+          });
+        });
+      location.reload();
+    },
     deleteItem(itemToDelete) {
       // Send a request to your backend to delete the item by its name
-      fetch("http://127.0.0.1:8081/removeItem/Shopping", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ itemName: itemToDelete.name }),
-      })
+      fetch(
+        "https://my-world-app-7nnip2tiwq-as.a.run.app/removeItem/Shopping",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ itemName: itemToDelete.name }),
+        }
+      )
         .then((response) => {
           if (response.status === 200) {
             this.$message({
@@ -118,8 +156,8 @@ export default {
 }
 .el-button.is-circle {
   padding: 0px;
-  width: 40px;
-  line-height: 3;
+  width: 30px;
+  line-height: 2;
   border-radius: 50%;
 }
 .el-button--success {

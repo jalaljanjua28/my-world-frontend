@@ -97,7 +97,7 @@ export default {
   },
   methods: {
     addItem(itemToAdd) {
-      fetch("http://127.0.0.1:8081/addItem/shopping", {
+      fetch("https://my-world-app-7nnip2tiwq-as.a.run.app/addItem/shopping", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -116,7 +116,7 @@ export default {
       location.reload();
     },
     deleteItem(itemToDelete) {
-      fetch("http://127.0.0.1:8081/removeItem/Master", {
+      fetch("https://my-world-app-7nnip2tiwq-as.a.run.app/removeItem/Master", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -148,16 +148,19 @@ export default {
     },
     updateExpiry() {
       // Update the expiry date logic goes here
-      fetch("http://127.0.0.1:8081/update-master-item-expiry", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          item_name: this.form.item_name,
-          days_to_extend: this.form.days_to_extend,
-        }),
-      })
+      fetch(
+        "https://my-world-app-7nnip2tiwq-as.a.run.app/update-master-item-expiry",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            item_name: this.form.item_name,
+            days_to_extend: this.form.days_to_extend,
+          }),
+        }
+      )
         .then((response) => {
           if (response.status === 200) {
             // Expiry updated successfully, handle accordingly
@@ -209,10 +212,9 @@ export default {
 }
 .el-button.is-circle {
   padding: 0px;
-  width: 30px;
-  line-height: 2.5;
+  width: 30px !important;
+  line-height: 2 !important;
   border-radius: 50%;
-  /* background: none !important; */
 }
 .el-button--success {
   color: #fff !important;

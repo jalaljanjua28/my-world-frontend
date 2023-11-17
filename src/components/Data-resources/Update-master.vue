@@ -42,7 +42,10 @@ export default {
         days_to_extend: this.form.days_to_extend,
       };
       axios
-        .post("http://127.0.0.1:8081/update-master-item-expiry", requestData)
+        .post(
+          "https://my-world-app-7nnip2tiwq-as.a.run.app/update-master-item-expiry",
+          requestData
+        )
         .then((response) => {
           console.log(response.data);
         })

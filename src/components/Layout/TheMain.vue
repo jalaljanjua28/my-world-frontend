@@ -1,64 +1,107 @@
 <template>
   <el-main class="main-content">
-    <search-main :Food="Food" :NonFood="NonFood" />
-
-    <el-button
-      @click="downloadLatestReceipt()"
-      type="success"
-      style="margin-left: 15px"
-    >
-      Click to view Items
-    </el-button>
-    <br />
-    <div v-if="displayResult">
-      <section>
-        <el-tabs>
-          <el-tab-pane label="Food"
-            ><span slot="label" style="font-size: large"
-              ><i
-                class="el-icon-food"
-                style="font-size: 22px; color: #6457f0"
-              ></i>
-              Food</span
-            >
-            <div>
-              <items :items="Food"></items>
-            </div>
-          </el-tab-pane>
-          <el-tab-pane label="Not Food">
-            <span slot="label" style="font-size: large"
-              ><i
-                class="el-icon-bicycle"
-                style="font-size: 22px; color: #6457f0"
-              ></i>
-              Non Food</span
-            >
-            <div>
-              <items :items="NonFood"></items>
-            </div>
-          </el-tab-pane>
-        </el-tabs>
-      </section>
-    </div>
     <div>
-      <p style="margin-left: 23px; margin-bottom: -18px">Expired Items</p>
-      <el-progress
-        :text-inside="true"
-        :stroke-width="26"
-        :percentage="parseFloat(getExpiredPercentage())"
+      <!-- Search Item Button and Dialog -->
+      <el-button
+        type="primary"
+        icon="el-icon-search"
+        size="x-small"
+        class="responsive-button"
+        style="margin-left: 15px"
+        @click="openSearchDialog"
       >
-        {{ getExpiredPercentage() + "% Expired" }}
-      </el-progress>
-      <p style="margin-left: 23px; margin-bottom: -18px">Non-Expired Items</p>
-      <el-progress
-        :text-inside="true"
-        :stroke-width="24"
-        :percentage="parseFloat(getNonExpiredPercentage())"
-        status="success"
-        label="Expired"
+        Search Item
+      </el-button>
+      <el-dialog :visible.sync="dialogSearchVisible" title="Search Item">
+        <search-main :Food="Food" :NonFood="NonFood" />
+      </el-dialog>
+
+      <!-- View Items Button and Dialog -->
+      <el-button
+        @click="openItemsDialog"
+        type="success"
+        class="responsive-button"
+        style="margin-left: 15px"
       >
-      </el-progress>
+        Click to view Items
+      </el-button>
+      <el-dialog :visible.sync="dialogItemsVisible" title="Items List">
+        <section>
+          <el-tabs>
+            <el-tab-pane label="Food">
+              <span slot="label" style="font-size: large"
+                ><i
+                  class="el-icon-food"
+                  style="font-size: 22px; color: #6457f0"
+                ></i>
+                Food</span
+              >
+              <div>
+                <items :items="Food"></items>
+              </div>
+            </el-tab-pane>
+            <el-tab-pane label="Not Food">
+              <span slot="label" style="font-size: large"
+                ><i
+                  class="el-icon-bicycle"
+                  style="font-size: 22px; color: #6457f0"
+                ></i>
+                Non Food</span
+              >
+              <div>
+                <items :items="NonFood"></items>
+              </div>
+            </el-tab-pane>
+          </el-tabs>
+        </section>
+      </el-dialog>
+
+      <!-- Open Recipes Button and Dialog -->
+      <el-button
+        @click="openRecipeDialog"
+        class="fetch-button, responsive-button"
+        type="warning"
+        style="margin-left: 15px"
+      >
+        Open Recipes Dialog
+      </el-button>
+      <el-dialog :visible.sync="dialogRecipeVisible" title="Generated Recipes">
+        <div v-if="recipes.length > 0" id="recipesContainer">
+          <h2>Generated Recipes</h2>
+          <div v-for="(recipe, index) in recipes" :key="index">
+            <h3>Group of Items: {{ recipe["Group of Items"].join(", ") }}</h3>
+            <p>Generated Recipe: {{ recipe["Generated Recipe"] }}</p>
+          </div>
+        </div>
+      </el-dialog>
+
+      <!-- Generate Diet Schedule Button and Dialog -->
+      <el-button
+        type="danger"
+        @click="openDietDialog"
+        style="margin-left: 15px"
+        class="responsive-button"
+      >
+        Generate Diet Schedule
+      </el-button>
+      <el-dialog :visible.sync="dialogDietVisible" title="Diet Schedule">
+        <div v-if="loading">Loading...</div>
+        <div v-else>
+          <div v-for="meal in dietSchedule" :key="meal['Meal Number']">
+            <h4>
+              Meal {{ meal["Meal Number"] }} - {{ meal["Meal Category"] }}
+            </h4>
+            <p><strong>Food Item:</strong> {{ meal["Food Item"] }}</p>
+            <p>
+              <strong>Meal Suggestion:</strong> {{ meal["Meal Suggestion"] }}
+            </p>
+            <hr />
+          </div>
+        </div>
+      </el-dialog>
     </div>
+    <prompts-gpt></prompts-gpt>
+    <br />
     <barcode-dummy class="barcode" ref="BarcodeDummy" />
   </el-main>
 </template>
@@ -67,24 +110,31 @@
 import Items from "../Data-resources/ItemsList.vue";
 import SearchMain from "../Data-resources/Search-component/SearchMain.vue";
 import BarcodeDummy from "@/views/BarcodeDummy.vue";
+import PromptsGpt from "../Data-resources/PromptsGPT.vue";
 
 export default {
   components: {
     Items,
     SearchMain,
     BarcodeDummy,
+    PromptsGpt,
   },
   data() {
     return {
+      recipes: [],
+      dialogSearchVisible: false,
       Food: [],
       NonFood: [],
+      dialogDietVisible: false,
+      dietSchedule: [],
       // fileData: [],
       Food_nonexpired: [],
-      displayResult: false, // Separate array for non-expired Food items
+      dialogRecipeVisible: false,
+      dialogItemsVisible: false,
     };
   },
   mounted() {
-    this.shopping_list(); // Fetch and process the master list data
+    this.downloadLatestReceipt();
     // const storedFileData = localStorage.getItem("fileData");
     // console.log("Stored data:", storedFileData);
 
@@ -99,83 +149,59 @@ export default {
     console.log("simulateUpload function triggered in BarcodeDummy.vue");
   },
   methods: {
-    shopping_list() {
-      fetch("http://127.0.0.1:8081/get-shopping-list-expired", {
-        method: "GET",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-        .then((response) => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error("Failed to fetch data.");
+    async openDietDialog() {
+      this.loading = true;
+      try {
+        const response = await fetch(
+          "https://my-world-app-7nnip2tiwq-as.a.run.app/diet-schedule-gpt",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
           }
-        })
+        );
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        this.dietSchedule = data.diet_schedule;
+      } catch (error) {
+        console.error("Error fetching diet schedule:", error);
+      } finally {
+        this.loading = false;
+        this.dialogDietVisible = true;
+      }
+    },
+
+    fetchRecipes() {
+      fetch("https://my-world-app-7nnip2tiwq-as.a.run.app/recipes-using-gpt")
+        .then((response) => response.json())
         .then((data) => {
-          try {
-            const base64Data = data.data;
-            const binaryData = new Uint8Array(
-              [...atob(base64Data)].map((char) => char.charCodeAt(0))
-            );
-
-            const textDecoder = new TextDecoder();
-            const decodedData = textDecoder.decode(binaryData);
-
-            const parsedData = JSON.parse(decodedData);
-
-            const Food = parsedData.Food;
-
-            for (const id in Food) {
-              const item = {
-                id: parseInt(id),
-                name: Food[id].Name,
-                image: Food[id].Image,
-                date: Food[id].Date,
-                expiry: Food[id].Expiry_Date,
-                price: Food[id].Price,
-                status: Food[id].Status,
-              };
-              Food[id] = item;
-
-              if (item.status === "Expired") {
-                this.Food_nonexpired.push(item);
-              }
-            }
-            this.Food = Food;
-          } catch (error) {
-            console.error("Error:", error);
-          }
+          this.recipes = data.recipes;
         })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
+        .catch((error) => console.error("Error fetching recipes:", error));
     },
-
-    // Calculate the percentage of expired items
-    getExpiredPercentage() {
-      if (this.Food.length === 0) {
-        return 0;
-      }
-      const expiredItems = this.Food.filter((item) => {
-        // Add your expiration date check logic here
-        return item.status === "Expired"; // Modify this condition as needed
-      });
-      return ((expiredItems.length / this.Food.length) * 100).toFixed(2);
+    openRecipeDialog() {
+      this.fetchRecipes(); // Fetch recipes when the dialog is opened
+      this.dialogRecipeVisible = true;
     },
-
-    // Calculate the percentage of non-expired items
-    getNonExpiredPercentage() {
-      if (this.Food.length === 0) {
-        return 0;
-      }
-      const nonExpiredItems = this.Food.filter((item) => {
-        // Add your expiration date check logic here
-        return item.status === "Not Expired"; // Modify this condition as needed
-      });
-      return ((nonExpiredItems.length / this.Food.length) * 100).toFixed(2);
+    closeRecipeDialog() {
+      this.dialogRecipeVisible = false;
+    },
+    openSearchDialog() {
+      this.dialogSearchVisible = true;
+    },
+    closeSearchDialog() {
+      this.dialogSearchVisible = false;
+    },
+    openItemsDialog() {
+      this.dialogItemsVisible = true;
+    },
+    closeItemsDialog() {
+      this.dialogItemsVisible = false;
     },
 
     // saveFileData(arrayBuffer) {
@@ -245,13 +271,16 @@ export default {
     //   // }
     // },
     downloadLatestReceipt() {
-      fetch("http://127.0.0.1:8081/serve-latest-receipt-data", {
-        method: "GET",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
+      fetch(
+        "https://my-world-app-7nnip2tiwq-as.a.run.app/serve-latest-receipt-data",
+        {
+          method: "GET",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
         .then((response) => {
           if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -316,7 +345,6 @@ export default {
             throw new Error("Received empty data or invalid JSON");
           }
           // this.saveFileData(arrayBuffer);
-          this.displayResult = true;
         })
         .catch((error) => {
           console.error("Error downloading latest receipt:", error);
@@ -328,22 +356,29 @@ export default {
 </script>
 
 <style>
+.responsive-button {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.el-dialog {
+  width: 70%;
+}
 .el-tabs {
-  margin-top: 40px;
+  margin-top: -10px;
 }
 .barcode {
   display: none;
 }
-.header-title {
+/* .header-title {
   text-align: left;
   margin-top: 0px;
-}
+} */
 .el-breadcrumb__item {
   float: unset;
 }
 
 /* Common styles for buttons */
-.el-button {
+/* .el-button {
   padding: 11px 10px;
   line-height: 1.5;
   font-weight: 500;
@@ -353,19 +388,19 @@ export default {
   font-size: 25px;
   border: none;
   color: #6457f0 !important;
-}
+} */
 
 /* Input styles */
-.el-input__suffix {
+/* .el-input__suffix {
   height: 100%;
   right: 10px;
   transition: all 0.3s;
   pointer-events: none;
-}
+} */
 
-.el-input__icon {
+/* .el-input__icon {
   color: black;
-}
+} */
 
 .el-input__inner {
   height: 40px;
@@ -388,7 +423,7 @@ export default {
 }
 
 /* Improved carousel styles */
-.el-carousel__container {
+/* .el-carousel__container {
   width: 450px;
   height: 250px;
 }
@@ -399,15 +434,15 @@ export default {
   opacity: 0.75;
   line-height: 300px;
   margin: 0;
-}
+} */
 
-.el-carousel__item:nth-child(2n) {
+/* .el-carousel__item:nth-child(2n) {
   background-color: #99a9bf;
 }
 
 .el-carousel__item:nth-child(2n + 1) {
   background-color: #d3dce6;
-}
+} */
 
 /* Main content styles */
 .main-content {
@@ -417,15 +452,15 @@ export default {
 }
 
 /* Section titles */
-.section-title {
+/* .section-title {
   margin: 25px 0;
   text-align: center;
   font-weight: bold;
   color: #333;
-}
+} */
 
 /* Item card styles */
-.item-card {
+/* .item-card {
   background-color: #fff;
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -451,24 +486,7 @@ export default {
   text-align: left;
   height: 125px;
   overflow: hidden;
-}
-.el-progress {
-  position: relative;
-  line-height: 1;
-  margin-top: 30px;
-  margin-right: 50px;
-  margin-left: 20px;
-  margin-bottom: 30px;
-}
-.el-progress-bar__innerText {
-  display: inline-block;
-  vertical-align: middle;
-  color: #fff;
-  font-size: 20px;
-  font: bold;
-  margin: 0 5px;
-  font-weight: 600;
-}
+} */
 
 @media screen and (max-width: 750px) {
   .el-carousel__container {

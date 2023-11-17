@@ -7,29 +7,16 @@
         </router-link>
       </el-breadcrumb-item>
     </el-breadcrumb>
-    <el-row class="recipe-page">
-      <el-col :span="8" v-for="recipe in recipes" :key="recipe.id">
-        <el-card class="recipe-item">
-          <img :src="recipe.image" class="recipe-item-image" />
-          <div class="recipe-item-content">
-            <h3 class="recipe-item-title">{{ recipe.title }}</h3>
-            <p class="recipe-item-description">{{ recipe.description }}</p>
-            <h4 class="recipe-item-ingredients-title">Ingredients:</h4>
-            <ul class="recipe-item-ingredients">
-              <li v-for="ingredient in recipe.ingredients" :key="ingredient">
-                {{ ingredient }}
-              </li>
-            </ul>
-            <h4 class="recipe-item-instructions-title">Instructions:</h4>
-            <ol class="recipe-item-instructions">
-              <li v-for="instruction in recipe.instructions" :key="instruction">
-                {{ instruction }}
-              </li>
-            </ol>
-          </div>
-        </el-card>
-      </el-col>
-    </el-row>
+    <div v-if="recipes.length > 0" id="recipesContainer">
+      <h2>Generated Recipes</h2>
+      <div v-for="(recipe, index) in recipes" :key="index">
+        <h3>Group of Items: {{ recipe["Group of Items"].join(", ") }}</h3>
+        <p>Generated Recipe: {{ recipe["Generated Recipe"] }}</p>
+      </div>
+    </div>
+    <el-button @click="fetchRecipes" class="fetch-button" type="success"
+      >Fetch Recipes</el-button
+    >
   </div>
 </template>
 
@@ -37,106 +24,39 @@
 export default {
   data() {
     return {
-      recipes: [
-        {
-          id: 1,
-          title: "Recipe 1",
-          description:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-          image: "https://via.placeholder.com/400x200",
-          ingredients: ["Ingredient 1", "Ingredient 2", "Ingredient 3"],
-          instructions: ["Instruction 1", "Instruction 2", "Instruction 3"],
-        },
-        {
-          id: 2,
-          title: "Recipe 2",
-          description:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-          image: "https://via.placeholder.com/400x200",
-          ingredients: ["Ingredient 1", "Ingredient 2", "Ingredient 3"],
-          instructions: ["Instruction 1", "Instruction 2", "Instruction 3"],
-        },
-        {
-          id: 3,
-          title: "Recipe 3",
-          description:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-          image: "https://via.placeholder.com/400x200",
-          ingredients: ["Ingredient 1", "Ingredient 2", "Ingredient 3"],
-          instructions: ["Instruction 1", "Instruction 2", "Instruction 3"],
-        },
-      ],
+      recipes: [],
     };
+  },
+  methods: {
+    fetchRecipes() {
+      fetch("http://127.0.0.1:8081/recipes-using-gpt")
+        .then((response) => response.json())
+        .then((data) => {
+          this.recipes = data.recipes; // Corrected line
+        })
+        .catch((error) => console.error("Error fetching recipes:", error));
+    },
   },
 };
 </script>
 
 <style scoped>
-.recipe-page {
-  display: flex;
-  flex-wrap: wrap;
-  align-content: center;
-  flex-direction: row;
-  margin-top: 50px;
-  margin-left: 35px;
-  margin-right: 30px;
+/* Add your custom styles here */
+.fetch-button {
+  margin-top: 30px !important;
 }
-
-.recipe-item {
-  height: 650px;
-}
-
-.recipe-item-image {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-}
-
-.recipe-item-content {
-  padding: 20px;
-}
-
-.recipe-item-title {
-  font-size: 24px;
-  margin-bottom: 20px;
-}
-
-.recipe-item-description {
-  font-size: 16px;
-  margin-bottom: 20px;
-}
-
-.recipe-item-ingredients-title,
-.recipe-item-instructions-title {
-  font-size: 20px;
-  margin-bottom: 10px;
-}
-
-.recipe-item-ingredients {
-  list-style-type: none;
-  padding: 0;
-}
-
-.recipe-item-ingredients li {
-  font-size: 16px;
-  margin-bottom: 10px;
-}
-
-.recipe-item-instructions {
-  font-size: 16px;
-}
-
-.recipe-item-instructions li {
-  margin-bottom: 10px;
-}
+/* .el-button--primary {
+  color: #fff !important;
+  background-color: #409eff !important;
+  border-color: #409eff !important;
+} */
 .el-button {
   display: inline-block;
   line-height: 1;
   white-space: nowrap;
   cursor: pointer;
-  background: none;
+  /* background: none; */
   border: 0px solid #dcdfe6;
-  color: #606266;
   text-align: center;
   box-sizing: border-box;
   outline: 0;
@@ -147,17 +67,5 @@ export default {
   font-size: 14px;
   border-radius: 4px;
   padding: 11px 10px;
-}
-@media screen and (max-width: 700px) {
-  .recipe-page[data-v-dab5ff12] {
-    display: flex;
-    flex-wrap: wrap;
-    align-content: center;
-    flex-direction: column;
-    margin-top: 50px;
-  }
-  .el-col-8 {
-    width: 100%;
-  }
 }
 </style>

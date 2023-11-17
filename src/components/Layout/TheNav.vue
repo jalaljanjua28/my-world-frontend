@@ -1,5 +1,5 @@
 <template>
-  <el-aside width="140px" class="nav">
+  <el-aside width="180px" class="nav">
     <div class="header-left">
       <svg
         class="header-logo"
@@ -111,7 +111,7 @@
 }
 .el-menu-item {
   color: #202020;
-  font-size: small;
+  font-size: medium;
   padding-left: 0px !important;
 }
 .el-menu-item.is-active {

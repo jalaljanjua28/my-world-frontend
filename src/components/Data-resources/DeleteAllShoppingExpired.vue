@@ -9,13 +9,16 @@ export default {
   methods: {
     deleteAllItems() {
       // Make an HTTP POST request to your Flask backend
-      fetch("https://my-world-app-7nnip2tiwq-as.a.run.app/deleteAll/Master", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({}),
-      })
+      fetch(
+        "https://my-world-app-7nnip2tiwq-as.a.run.app/deleteAll/Shopping_expired",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({}),
+        }
+      )
         .then((response) => response.json())
         .then((data) => {
           // Handle the response from the server if needed
