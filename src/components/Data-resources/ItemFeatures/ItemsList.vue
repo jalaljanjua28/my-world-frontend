@@ -87,7 +87,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 li {
   display: inline-block;
   margin-right: 30px;

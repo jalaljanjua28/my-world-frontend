@@ -1,154 +1,175 @@
 <template>
   <div>
-    <el-header class="header" style="height: 60px">
-      <el-col
-        :xs="24"
-        :sm="24"
-        :lg="24"
-        style="display: inline-flex; align-items: stretch"
-        ><el-button
-          @click="drawer = true"
-          style="margin-right: 16px; background-color: #f9f9f9"
-          size="small"
-          icon="el-icon-more"
-          class="el-button-nav"
+    <el-header class="header" style="background: crimson; height: 100px">
+      <div class="header-left">
+        <svg
+          class="header-logo"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 10 50 25"
         >
-        </el-button>
-        <el-drawer
-          :visible.sync="drawer"
-          :with-header="false"
-          class="el-drawer.rtl"
-        >
-          <span>
-            <div
-              style="
-                display: flex;
-                align-items: center;
-                padding: 0px;
-                flex-direction: column;
-                justify-content: space-around;
-                margin-top: 0px;
-                margin-left: 0px;
-                height: 96px;
-                background-color: gainsboro;
-                line-height: 1.5;
-              "
+          <path
+            fill="maroon"
+            d="M 16.71875 5 L 0 22 L 4.7480469 22 L 19.074219 7.4003906 L 33.398438 22 L 50 22 L 33.28125 5 L 16.71875 5 z M 19.074219 11.361328 L 9.0429688 22.076172 L 9.0429688 32.150391 C 9.0429688 33.681391 10.298125 34.9375 11.828125 34.9375 L 23.783203 34.9375 L 33 44.917969 L 33 34.9375 L 38.171875 34.9375 C 39.702875 34.9375 40.957031 33.682344 40.957031 32.152344 L 40.957031 25 L 32.261719 25 L 19.074219 11.361328 z"
+          />
+        </svg>
+        <p class="logo-text">My World</p>
+      </div>
+      <div class="header-right">
+        <div class="nav-buttons" style="">
+          <el-button type="primary" size="x-small" circle>Items</el-button>
+          <el-button type="success" size="x-small" circle>Recipes</el-button>
+          <router-link to="/health-page">
+            <el-button type="warning" size="x-small" circle style="width: 120%"
+              >Health</el-button
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 60 50"
-                width="50"
-                height="50"
-                style="fill: #6457f0; margin-right: -6px"
-              >
-                <path
-                  fill="#6457F0"
-                  d="M 16.71875 5 L 0 22 L 4.7480469 22 L 19.074219 7.4003906 L 33.398438 22 L 50 22 L 33.28125 5 L 16.71875 5 z M 19.074219 11.361328 L 9.0429688 22.076172 L 9.0429688 32.150391 C 9.0429688 33.681391 10.298125 34.9375 11.828125 34.9375 L 23.783203 34.9375 L 33 44.917969 L 33 34.9375 L 38.171875 34.9375 C 39.702875 34.9375 40.957031 33.682344 40.957031 32.152344 L 40.957031 25 L 32.261719 25 L 19.074219 11.361328 z"
-                />
-              </svg>
-              <h3 style="margin: 0; color: #202020">My World</h3>
-            </div>
-            <el-menu style="background-color: #f9f9f9">
-              <router-link to="/" style="text-decoration: none"
-                ><el-menu-item
-                  style="border-bottom: none"
-                  class="el-menu-item"
-                  index="8"
-                  ><i class="el-icon-menu"></i>Homepage</el-menu-item
-                ></router-link
-              >
-              <router-link to="/account-page" style="text-decoration: none"
-                ><el-menu-item
-                  style="border-bottom: none"
-                  class="el-menu-item"
-                  index="9"
-                  ><i class="el-icon-user"></i>Account</el-menu-item
-                ></router-link
-              >
-              <router-link to="/offer-list" style="text-decoration: none"
-                ><el-menu-item
-                  style="border-bottom: none"
-                  class="el-menu-item"
-                  index="10"
-                >
-                  <i class="el-icon-goods"></i>Offers</el-menu-item
-                ></router-link
-              >
-              <router-link to="/recipe-page" style="text-decoration: none"
-                ><el-menu-item
-                  style="border-bottom: none"
-                  class="el-menu-item"
-                  index="11"
-                  ><i class="el-icon-notebook-2"></i>Recipes</el-menu-item
-                ></router-link
-              >
-
-              <router-link to="/shopping-cart" style="text-decoration: none">
-                <el-menu-item
-                  style="border-bottom: none"
-                  class="el-menu-item"
-                  index="3"
-                  ><i class="el-icon-shopping-cart-full"></i>Shopping
-                  Cart</el-menu-item
-                ></router-link
-              >
-              <router-link to="/orders-history" style="text-decoration: none">
-                <el-menu-item
-                  style="border-bottom: none"
-                  class="el-menu-item"
-                  index="14"
-                  ><i class="el-icon-takeaway-box"></i>Order
-                  History</el-menu-item
-                ></router-link
-              >
-              <router-link to="/items-inventory" style="text-decoration: none">
-                <el-menu-item
-                  style="border-bottom: none"
-                  class="el-menu-item"
-                  index="14"
-                  ><i class="el-icon-fork-spoon"></i>Items
-                  Inventory</el-menu-item
-                ></router-link
-              >
-              <router-link to="/barcode-scan" style="text-decoration: none">
-                <el-menu-item
-                  style="border-bottom: none"
-                  class="el-menu-item"
-                  index="19"
-                  ><i class="el-icon-camera"></i>Barcode Scan</el-menu-item
-                ></router-link
-              ><router-link to="/about-us" style="text-decoration: none"
-                ><el-menu-item
-                  style="border-bottom: none"
-                  class="el-menu-item"
-                  index="12"
-                  ><i class="el-icon-info"></i>About Us</el-menu-item
-                ></router-link
-              >
-              <router-link to="/faqs-page" style="text-decoration: none"
-                ><el-menu-item
-                  style="border-bottom: none"
-                  class="el-menu-item"
-                  index="13"
-                  ><i class="el-icon-question"></i>FAQs</el-menu-item
-                ></router-link
-              >
-            </el-menu></span
+          </router-link>
+        </div>
+        <el-button
+          @click="drawer = true"
+          style="
+            background-color: crimson;
+            color: white;
+            font-size: 36px;
+            margin-left: 13px;
+            margin-top: 18px;
+            margin-right: -20px;
+            border-color: crimson;
+          "
+          size="small"
+          icon="el-icon-s-operation"
+          class="el-button-nav"
+        ></el-button>
+      </div>
+      <el-drawer
+        :visible.sync="drawer"
+        :with-header="false"
+        class="el-drawer.rtl"
+      >
+        <span>
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              padding: 0px;
+              flex-direction: row;
+              justify-content: center;
+              margin-top: 0px;
+              margin-left: 0px;
+              height: 60px;
+              background-color: crimson;
+            "
           >
-        </el-drawer>
-      </el-col>
-      <the-menu></the-menu>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 60 50"
+              width="50"
+              height="50"
+              style="fill: #6457f0; margin-right: -6px"
+            >
+              <path
+                fill="maroon"
+                d="M 16.71875 5 L 0 22 L 4.7480469 22 L 19.074219 7.4003906 L 33.398438 22 L 50 22 L 33.28125 5 L 16.71875 5 z M 19.074219 11.361328 L 9.0429688 22.076172 L 9.0429688 32.150391 C 9.0429688 33.681391 10.298125 34.9375 11.828125 34.9375 L 23.783203 34.9375 L 33 44.917969 L 33 34.9375 L 38.171875 34.9375 C 39.702875 34.9375 40.957031 33.682344 40.957031 32.152344 L 40.957031 25 L 32.261719 25 L 19.074219 11.361328 z"
+              />
+            </svg>
+            <h3 style="margin: 12px; color: white">My World</h3>
+          </div>
+          <el-menu
+            style="
+              background-color: midnightblue !important;
+              height: 92% !important;
+            "
+          >
+            <router-link to="/" style="text-decoration: none"
+              ><el-menu-item
+                style="border-bottom: none"
+                class="el-menu-item"
+                index="8"
+                ><i class="el-icon-menu"></i>Homepage</el-menu-item
+              ></router-link
+            >
+            <router-link to="/account-page" style="text-decoration: none"
+              ><el-menu-item
+                style="border-bottom: none"
+                class="el-menu-item"
+                index="9"
+                ><i class="el-icon-user"></i>Account</el-menu-item
+              ></router-link
+            >
+            <router-link to="/offer-list" style="text-decoration: none"
+              ><el-menu-item
+                style="border-bottom: none"
+                class="el-menu-item"
+                index="10"
+              >
+                <i class="el-icon-goods"></i>Offers</el-menu-item
+              ></router-link
+            >
+            <router-link to="/recipe-page" style="text-decoration: none"
+              ><el-menu-item
+                style="border-bottom: none"
+                class="el-menu-item"
+                index="11"
+                ><i class="el-icon-notebook-2"></i>Recipes</el-menu-item
+              ></router-link
+            >
+            <router-link to="/shopping-cart" style="text-decoration: none">
+              <el-menu-item
+                style="border-bottom: none"
+                class="el-menu-item"
+                index="3"
+                ><i class="el-icon-shopping-cart-full"></i>Shopping
+                Cart</el-menu-item
+              ></router-link
+            >
+            <router-link to="/orders-history" style="text-decoration: none">
+              <el-menu-item
+                style="border-bottom: none"
+                class="el-menu-item"
+                index="14"
+                ><i class="el-icon-takeaway-box"></i>Order History</el-menu-item
+              ></router-link
+            >
+            <router-link to="/items-inventory" style="text-decoration: none">
+              <el-menu-item
+                style="border-bottom: none"
+                class="el-menu-item"
+                index="14"
+                ><i class="el-icon-fork-spoon"></i>Items Inventory</el-menu-item
+              ></router-link
+            >
+            <router-link to="/barcode-scan" style="text-decoration: none">
+              <el-menu-item
+                style="border-bottom: none"
+                class="el-menu-item"
+                index="19"
+                ><i class="el-icon-camera"></i>Barcode Scan</el-menu-item
+              ></router-link
+            ><router-link to="/about-us" style="text-decoration: none"
+              ><el-menu-item
+                style="border-bottom: none"
+                class="el-menu-item"
+                index="12"
+                ><i class="el-icon-info"></i>About Us</el-menu-item
+              ></router-link
+            >
+            <router-link to="/faqs-page" style="text-decoration: none"
+              ><el-menu-item
+                style="border-bottom: none"
+                class="el-menu-item"
+                index="13"
+                ><i class="el-icon-question"></i>FAQs</el-menu-item
+              ></router-link
+            >
+          </el-menu></span
+        >
+      </el-drawer>
     </el-header>
   </div>
 </template>
 
 <script>
-import TheMenu from "../UI/TheMenu.vue";
-
 export default {
-  components: {
-    TheMenu,
-  },
+  components: {},
   data() {
     return {
       drawer: false,
@@ -158,7 +179,45 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.el-drawer.ltr,
+.el-drawer.rtl {
+  height: 96% !important;
+  top: 0;
+  bottom: 0;
+}
+.el-menu {
+  border-right: none;
+  list-style: none;
+  position: relative;
+  margin: 0;
+  padding-left: 10px;
+  color: #202020;
+  line-height: 10vh;
+  background-color: gainsboro;
+}
+.el-menu-item:hover {
+  background: unset;
+  display: -webkit-inline-box;
+}
+.el-menu-item {
+  color: white;
+  font-size: medium;
+  padding-left: 0px !important;
+}
+.el-menu-item.is-active {
+  color: none;
+  width: 100%;
+}
+.el-menu-item[data-v-7fee856e] {
+  color: white;
+  font-size: medium;
+  display: flex;
+  padding-left: 0px !important;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
 .el-menu-item [class^="el-icon-"] {
   margin-right: 5px;
   width: 24px;
@@ -167,7 +226,18 @@ export default {
   vertical-align: middle;
   margin-top: -4px;
   color: #6457f0 !important;
-  opacity: 50%;
+  opacity: 80%;
+}
+.el-button + .el-button,
+.el-checkbox.is-bordered + .el-checkbox.is-bordered {
+  margin-left: 0px;
+}
+.el-button.is-circle {
+  border-radius: 30px;
+  width: 35%;
+}
+.header {
+  justify-content: space-between;
 }
 .el-drawer.rtl {
   width: min-content !important;
@@ -177,51 +247,66 @@ export default {
   flex: 1;
   overflow: auto;
   background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.24);
+  height: 60px;
 }
-
 .header-left {
   display: flex;
   align-items: center;
-  margin-right: 22px;
-  background-color: #f9f9f9;
-  width: 100%;
+  height: 53px;
+}
+.header-right {
+  display: flex;
+  margin-top: -47px;
+  justify-content: flex-end;
+}
+.el-button--primary {
+  color: #fff;
+  background-color: firebrick;
+  border-color: crimson;
+}
+.el-button--success {
+  color: #fff;
+  background-color: firebrick;
+  border-color: crimson;
+}
+.el-button--warning {
+  color: #fff;
+  background-color: firebrick;
+  border-color: crimson;
 }
 .header-logo {
-  width: 59px;
+  width: 55px;
   height: 79px;
   margin-right: 4px;
   margin-left: 2px;
+  margin-top: 40px;
 }
 .logo-text {
   font-size: 1em;
   font-weight: bold;
-  color: #202020;
+  color: white;
   margin-left: 8px;
   width: max-content;
+  margin-top: 54px;
 }
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 24px;
+.el-button-nav {
   background-color: #f9f9f9;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.24);
-  height: 60px;
 }
-
-@media screen and (min-width: 520px) {
-  .el-button-nav {
-    display: none;
-  }
-  .header {
-    display: none;
-  }
+.nav-buttons {
+  display: flex;
+  align-items: flex-end; /* Align the nav-buttons to the bottom of the container */
+  justify-content: space-evenly;
+  width: 250px;
+  margin-bottom: 10px;
 }
 @media screen and (max-width: 520px) {
-  .header-left {
-    display: flex;
-    align-items: center;
-    margin-right: 0px;
+  .header {
+    flex-direction: column;
+    height: auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    align-items: flex-start; /* Align items to the start in mobile view */
   }
   .header-logo {
     display: none;
@@ -229,33 +314,19 @@ export default {
   .logo-text {
     display: none;
   }
-  .nav {
-    display: none;
+  .header-right {
+    margin-top: 20px;
   }
-  .header {
-    flex-direction: unset;
-    height: auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-  }
-
-  .header-menu {
-    width: 100%;
-    background-color: #fff;
-  }
-  .el-menu .el-menu-item {
-    color: #202020 !important;
-  }
-  .el-drawer {
-    position: relative;
-    box-sizing: border-box;
-    background-color: #fff;
-    display: flex;
+  .nav-buttons {
     flex-direction: column;
-    box-shadow: 0 8px 10px -5px rgba(0, 0, 0, 0.2),
-      0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12);
-    overflow: hidden;
-    outline: 0;
+    margin-top: 20px;
+  }
+  .nav-buttons[data-v-7fee856e] {
+    flex-direction: row;
+    margin-top: 22px;
+  }
+  .header-right[data-v-7fee856e] {
+    margin-top: -68px;
   }
 }
 </style>

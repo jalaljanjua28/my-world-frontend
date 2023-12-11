@@ -10,10 +10,11 @@ import AboutUs from "../views/AboutUs";
 import ItemsInventory from "../views/ItemsInventory";
 import AccountPage from "../views/AccountPage";
 import OrdersHistory from "../views/OrdersHistory";
-import RecipePage from "../views/RecipePage";
+import RecipePage from "../components/Data-resources/ItemFeatures/RecipePage";
 import FAQPage from "../views/FAQs";
 import BarcodeScan from "../views/BarcodeScan";
 import Search from "../components/Data-resources/Search-component/SearchInventory.vue";
+import HealthPage from "../components/Data-resources/ItemFeatures/HealthPage.vue";
 
 Vue.use(VueRouter);
 
@@ -82,6 +83,11 @@ const routes = [
     path: "/search-inventory",
     name: "search",
     component: Search,
+  },
+  {
+    path: "/health-page",
+    name: "health",
+    component: HealthPage,
   },
 ];
 

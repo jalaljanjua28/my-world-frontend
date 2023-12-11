@@ -172,11 +172,11 @@ import FoodExpired from "../components/Data-resources/ProductDetails/ShoppingLis
 import NonfoodExpired from "../components/Data-resources/ProductDetails/ShoppingList/NonFoodList.vue";
 import FoodNonexpired from "../components/Data-resources/ProductDetails/MasterList/FoodList.vue";
 import NonfoodNonexpired from "../components/Data-resources/ProductDetails/MasterList/NonFoodList.vue";
-import AddItems from "../components/Data-resources/AddCustomItem.vue";
-import DeleteAllMaster from "../components/Data-resources/DeleteAllMaster.vue";
-import DeleteAllShopping from "../components/Data-resources/DeleteAllShopping.vue";
-import DeleteAllShoppingExpired from "../components/Data-resources/DeleteAllShoppingExpired.vue";
-import ItemsList from "../components/Data-resources/ItemsList.vue";
+import AddItems from "../components/Data-resources/AddItems/AddCustomItem.vue";
+import DeleteAllMaster from "../components/Data-resources/DeleteItems/DeleteAllMaster.vue";
+import DeleteAllShopping from "../components/Data-resources/DeleteItems/DeleteAllShopping.vue";
+import DeleteAllShoppingExpired from "../components/Data-resources/DeleteItems/DeleteAllShoppingExpired.vue";
+import ItemsList from "../components/Data-resources/ItemFeatures/ItemsList.vue";
 
 export default {
   components: {
@@ -428,6 +428,10 @@ export default {
 </script>
 
 <style scoped>
+.el-breadcrumb {
+  font-size: 14px;
+  line-height: 3;
+}
 .el-tabs__item {
   background: red;
 }

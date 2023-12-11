@@ -89,9 +89,9 @@
 </template>
 
 <style>
-.el-container {
+/* .el-container {
   font-family: sans-serif;
-}
+} */
 .el-menu {
   border-right: none;
   list-style: none;
@@ -102,9 +102,9 @@
   line-height: 10vh;
   background-color: gainsboro;
 }
-.nav {
+/* .nav {
   min-height: 100%;
-}
+} */
 .el-menu-item:hover {
   background: unset;
   display: -webkit-inline-box;
@@ -118,10 +118,10 @@
   color: none;
   width: 100%;
 }
-.el-aside {
+/* .el-aside {
   overflow: auto;
   box-sizing: border-box;
   flex-shrink: 0;
   background-color: gainsboro;
-}
+} */
 </style>

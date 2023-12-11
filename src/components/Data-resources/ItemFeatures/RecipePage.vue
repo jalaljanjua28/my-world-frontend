@@ -7,6 +7,14 @@
         </router-link>
       </el-breadcrumb-item>
     </el-breadcrumb>
+    <div>
+      <el-button type="primary" size="x-small">Homepage</el-button>
+      <el-button type="success" size="x-small">Items</el-button>
+      <el-button type="warning" size="x-small">Health</el-button>
+      <el-button @click="fetchRecipes" class="fetch-button" type="success"
+        >Fetch Recipes</el-button
+      >
+    </div>
     <div v-if="recipes.length > 0" id="recipesContainer">
       <h2>Generated Recipes</h2>
       <div v-for="(recipe, index) in recipes" :key="index">
@@ -14,9 +22,6 @@
         <p>Generated Recipe: {{ recipe["Generated Recipe"] }}</p>
       </div>
     </div>
-    <el-button @click="fetchRecipes" class="fetch-button" type="success"
-      >Fetch Recipes</el-button
-    >
   </div>
 </template>
 

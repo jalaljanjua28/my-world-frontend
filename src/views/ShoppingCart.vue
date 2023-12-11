@@ -80,9 +80,6 @@ export default {
       cartItems: [],
     };
   },
-  // created() {
-  //   this.Items = [...this.Food, ...this.notFood];
-  // },
   computed: {
     totalPrice() {
       return this.cartItems.reduce((acc, item) => acc + item.price, 0);

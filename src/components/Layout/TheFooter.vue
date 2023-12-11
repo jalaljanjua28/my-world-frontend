@@ -194,10 +194,7 @@ p {
   border-radius: 0%;
   padding: 10px;
 }
-.search-input {
-  width: 200px;
-  margin-left: 10px;
-}
+
 @media screen and (min-width: 520px) {
   .footer2 {
     display: none;
